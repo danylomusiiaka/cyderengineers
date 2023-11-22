@@ -28,6 +28,10 @@ p {
   font-size: 18px;
 }
 
+img {
+  width: 300px;
+}
+
 .input-group-append {
   background: rgba(0, 208, 197, 1);
   color: white;
@@ -53,3 +57,4 @@ p {
   }
 
 }
+
