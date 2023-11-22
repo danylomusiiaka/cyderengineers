@@ -1,8 +1,7 @@
 function WelcomePage() {
     return (
-        <main className="border">
-            <section className="row align-items-center" style={{ height: '550px' }}>
-                <div className="col-md-3 text-left d-xl-block d-none">
+        <section className="border row align-items-center mx-0" style={{ height: '550px' }}>
+                <div className="col-md-3 text-left d-xl-block d-none px-0">
                     <img src="src/images/first.png" alt="hi" className="img-fluid mx-auto" />
                 </div>
                 <div className="col-xl-6 text-center">
@@ -15,7 +14,7 @@ function WelcomePage() {
                         </p>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-md-8">
+                        <div className="col-md-9">
                             <form className="input-group">
                                 <input type="text" className="form-control" placeholder="Your email address..." />
                                 <button type="button" className="btn input-group-append">Sign up</button>
@@ -23,11 +22,10 @@ function WelcomePage() {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3 text-right d-xl-block d-none">
+            <div className="col-md-3 text-right d-xl-block d-none px-0" >
                     <img src="src/images/second.png" alt="h" className="img-fluid mx-auto" />
                 </div>
-            </section>
-        </main>
+        </section>
     );
 }
 
