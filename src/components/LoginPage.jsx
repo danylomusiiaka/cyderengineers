@@ -1,4 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
 function LoginPage() {
@@ -13,7 +14,7 @@ function LoginPage() {
     })
 
     return (
-        <div className='create-post'>
+        <div className='auth-section'>
             <Formik initialValues={initialValues} validationSchema={validation}>
                 <Form className='formContainer'>
                     <h1>Логін</h1>
@@ -24,6 +25,7 @@ function LoginPage() {
                     <Field id="inputData" name="password" />
                     <ErrorMessage name='password' component='span' />
                     <button type='submit'>Увійти</button>
+                    <p>Не маєте облікового запису? <Link className='link' to="/sign-up">Зареєструйтесь</Link></p>
                 </Form>
             </Formik>
         </div>

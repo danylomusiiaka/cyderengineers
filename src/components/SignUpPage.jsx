@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 
 function SignUpPage() {
     const initialValues = {
@@ -15,7 +16,7 @@ function SignUpPage() {
     })
 
     return (
-        <div className='create-post'>
+        <div className='auth-section'>
             <Formik initialValues={initialValues} validationSchema={validation}>
                 <Form className='formContainer'>
                     <h1>Реєстрація</h1>
@@ -29,6 +30,7 @@ function SignUpPage() {
                     <Field id="inputData" name="confirmPassword" />
                     <ErrorMessage name='confirmPassword' component='span' />
                     <button type='submit'>Зареєструватись</button>
+                    <p>Вже маєте обліковий запис? <Link className='link' to="/login">Увійдіть</Link></p>
                 </Form>
             </Formik>
         </div>

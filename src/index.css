@@ -58,12 +58,13 @@ img {
 
 }
 
-.create-post {
+.auth-section {
   width: 100vw;
   height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 }
 
 .formContainer {
@@ -97,6 +98,17 @@ img {
 .formContainer button:hover {
   cursor: pointer;
   background-color: rgb(2, 245, 233);
+}
+
+.formContainer p {
+  margin-top: 15px;
+  color: #212529;
+  font-weight: 300;
+}
+
+.formContainer .link {
+  color: #212529;
+  font-weight: 600;
 }
 
 span {
