@@ -16,6 +16,7 @@ function LoginPage() {
         <div className='create-post'>
             <Formik initialValues={initialValues} validationSchema={validation}>
                 <Form className='formContainer'>
+                    <h1>Логін</h1>
                     <label>Ім'я користувача: </label>
                     <Field id="inputData" name="username" />
                     <ErrorMessage name='username' component='span' />
