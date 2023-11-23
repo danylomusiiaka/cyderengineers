@@ -28,6 +28,10 @@ p {
   font-size: 18px;
 }
 
+img {
+  width: 300px;
+}
+
 .input-group-append {
   background: rgba(0, 208, 197, 1);
   color: white;
@@ -52,4 +56,50 @@ p {
     margin: 10px !important;
   }
 
+}
+
+.create-post {
+  width: 100vw;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.formContainer #inputData {
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 2px solid grey;
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 20px;
+}
+
+.formContainer button {
+  margin-top: 15px;
+  height: 40px;
+  border: none;
+  background-color: rgba(0, 208, 197, 1);
+  border-radius: 5px;
+  color: white;
+}
+
+.formContainer button:hover {
+  cursor: pointer;
+  background-color: rgb(2, 245, 233);
+}
+
+span {
+  color: red;
+  margin-bottom: 10px;
 }
