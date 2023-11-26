@@ -1,14 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 function SignUpPage() {
-    const addUser = (values) => {
-        Axios.post('http://localhost:3001/adduser', {
+    const navigate = useNavigate()
+
+    const addUser = async (values) => {
+        const response = await Axios.post('http://localhost:3001/adduser', {
             email: values.email,
             password: values.password,
         });
+        if (response.status === 200) {
+            navigate("/main", { state: { email: values.email } })
+        }
     };
 
     const initialValues = {
