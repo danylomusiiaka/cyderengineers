@@ -12,31 +12,23 @@ function Header() {
         Axios.get("http://localhost:3001/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
-    }, []);
+    });
 
     return (
-        <header class="navbar navbar-light bg-light px-4">
-
-            {email ? (
-                <>
-                    <Link class="navbar-brand h1" to="/main">Yukis</Link>
-                    <div class="form-inline">
-                        <div>
-                            Hello, {email}!
-                        </div>
+        <header className="navbar navbar-light bg-light px-4">
+            <Link className="navbar-brand h1" to="/">Yukis</Link>
+            <div className="form-inline">
+                {email ? (
+                    <div>
+                        Hello, {email}!
                     </div>
-                </>
-            ) : (
-                <>
-                    <Link class="navbar-brand h1" to="/">Yukis</Link>
-                    <div class="form-inline">
+                ) : (
+                    <>
                         <Link className="btn login mx-2" to="/login">Log in</Link>
                         <Link className="btn sign-in" to="/sign-up">Sign up</Link>
-                    </div>
-                </>
-            )}
-
-
+                    </>
+                )}
+            </div>
         </header>
     )
 }
