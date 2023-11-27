@@ -5,6 +5,8 @@ import Axios from 'axios';
 
 function SignUpPage() {
     const navigate = useNavigate()
+    
+    Axios.defaults.withCredentials = true
 
     const addUser = async (values) => {
         const response = await Axios.post('http://localhost:3001/adduser', {
@@ -15,6 +17,8 @@ function SignUpPage() {
             navigate("/main", { state: { email: values.email } })
         }
     };
+
+    
 
     const initialValues = {
         email: '',
@@ -48,6 +52,7 @@ function SignUpPage() {
                     <p>Вже маєте обліковий запис? <Link className='link' to="/login">Увійдіть</Link></p>
                 </Form>
             </Formik>
+            
         </div>
     );
 }
