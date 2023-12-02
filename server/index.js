@@ -57,7 +57,7 @@ app.post('/adduser', async (req, res) => {
         password: password,
         isLogined: false
     })
-
+    req.session.user = user
     await user.save()
     res.send('200 Success')
 })
@@ -70,6 +70,34 @@ app.get("/adduser", (req, res) => {
         res.send({ loggedIn: false })
     }
 })
+
+app.post('/login', async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const user = await userModel.findOne({ email: email, password: password });
+
+    if (!user) {
+        return res.status(401).send('Invalid email or password');
+    }
+
+    user.isLogined = true;
+    req.session.user = user
+    await user.save();
+    res.send('200 Success');
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.clearCookie('userID');
+        res.sendStatus(200);
+    });
+});
+
 
 app.listen(3001, () => {
     console.log("connected to port 3001");

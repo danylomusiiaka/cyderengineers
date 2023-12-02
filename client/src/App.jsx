@@ -19,10 +19,10 @@ function App() {
   return (
     <>
       <Router>
-        <Header />
+        <Header setAuth={setAuth} />
         <Routes>
           <Route path="/" element={isAuth ? <MainPage isAuth={isAuth} setAuth={setAuth} /> : <WelcomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
           <Route path="/sign-up" element={<SignUpPage />} />
         </Routes>
       </Router>
