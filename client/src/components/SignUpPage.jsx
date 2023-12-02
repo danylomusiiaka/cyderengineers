@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
-function SignUpPage() {
+function SignUpPage({ setAuth }) {
     const navigate = useNavigate()
 
     const addUser = async (values) => {
@@ -12,6 +12,7 @@ function SignUpPage() {
             password: values.password,
         });
         if (response.status == 200) {
+            setAuth(true);
             navigate("/");
         }
     };
