@@ -12,7 +12,6 @@ function App() {
 
   useEffect(() => {
     Axios.get("http://localhost:3001/adduser").then((response) => {
-      console.log(response);
       setAuth(response.data.loggedIn);
     });
   });
@@ -24,7 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={isAuth ? <MainPage isAuth={isAuth} setAuth={setAuth} /> : <WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/sign-up" element={<SignUpPage setAuth={setAuth} />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
         </Routes>
       </Router>
     </>
