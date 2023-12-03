@@ -9,13 +9,13 @@ import Axios from 'axios';
 
 function App() {
   const [isAuth, setAuth] = useState(false);
-
+  const [emailFromWelcome, setEmailFromWelcome] = useState('');
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     Axios.get("http://localhost:3001/adduser").then((response) => {
       setAuth(response.data.loggedIn);
-      setLoading(false); 
+      setLoading(false);
     });
   }, []);
   return (
@@ -24,9 +24,21 @@ function App() {
         <Header setAuth={setAuth} />
         {!isLoading && (
           <Routes>
-            <Route path="/" element={isAuth ? <MainPage isAuth={isAuth} setAuth={setAuth} /> : <WelcomePage />} />
+            <Route
+              path="/"
+              element={
+                isAuth ? (
+                  <MainPage isAuth={isAuth} setAuth={setAuth} />
+                ) : (
+                  <WelcomePage setEmailFromWelcome={setEmailFromWelcome} />
+                )
+              }
+            />
             <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route
+              path="/sign-up"
+              element={<SignUpPage emailFromWelcome={emailFromWelcome} />}
+            />
           </Routes>
         )}
       </Router>
