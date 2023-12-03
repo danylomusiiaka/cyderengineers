@@ -10,21 +10,25 @@ import Axios from 'axios';
 function App() {
   const [isAuth, setAuth] = useState(false);
 
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     Axios.get("http://localhost:3001/adduser").then((response) => {
       setAuth(response.data.loggedIn);
+      setLoading(false); 
     });
-  });
-
+  }, []);
   return (
     <>
       <Router>
         <Header setAuth={setAuth} />
-        <Routes>
-          <Route path="/" element={isAuth ? <MainPage isAuth={isAuth} setAuth={setAuth} /> : <WelcomePage />} />
-          <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-        </Routes>
+        {!isLoading && (
+          <Routes>
+            <Route path="/" element={isAuth ? <MainPage isAuth={isAuth} setAuth={setAuth} /> : <WelcomePage />} />
+            <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+          </Routes>
+        )}
       </Router>
     </>
   )

@@ -10,6 +10,7 @@ function MainPage() {
         Axios.get("http://localhost:3001/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
+        
     });
 
     return (
