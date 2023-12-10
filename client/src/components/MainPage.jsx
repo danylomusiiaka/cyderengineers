@@ -24,23 +24,23 @@ function MainPage() {
         (!selectedCategory || test.option === selectedCategory) &&
         test.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    const userTests = filteredTests.filter((test) => test.author === email);
+    const otherTests = filteredTests.filter((test) => test.author !== email);
 
-    const handleDeleteTest = (testId) => {
-        try {
+
+    const handleDeleteTest = (testId, author) => {
+        if (author === email) {
             Axios.delete(`http://localhost:3001/tests/${testId}`);
             Axios.get("http://localhost:3001/tests").then((response) => {
                 setTests(response.data);
             });
-        } catch (error) {
-            console.error("Error deleting test:", error);
         }
     };
 
     return (
         <section className="container">
-            <h2>Привіт, {email}!</h2>
             <nav className="navbar">
-                <h2 className="navbar-brand">Доступні тести: </h2>
+                <h2 className="navbar-brand">Привіт, {email}!</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"
@@ -51,7 +51,7 @@ function MainPage() {
                     />
 
                     <div className="dropdown">
-                        <button type="button" className="btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <button className="btn dropdown-toggle" data-bs-toggle="dropdown">
                             {selectedCategory ? selectedCategory : "Категорія"}
                         </button>
                         <ul className="dropdown-menu">
@@ -73,14 +73,19 @@ function MainPage() {
                         </ul>
                     </div>
 
-                    <Link className="btn sign-in" style={{ color: 'white' }} to="/create-test">
+                    <Link className="btn sign-in add-btn" style={{ color: 'white' }} to="/create-test">
                         Додати
                     </Link>
                 </div>
             </nav>
 
-            <div className="row">
-                {filteredTests.map((test) => (
+            <div className="row cards">
+                {userTests.length > 0 && (
+                    <div className="col-12">
+                        <h3>Ваші створені тести:</h3>
+                    </div>
+                )}
+                {userTests.map((test) => (
                     <div key={test._id} className="col-md-4 col-sm-6">
                         <div className="card">
                             <div className="card-body">
@@ -90,17 +95,50 @@ function MainPage() {
                                 <Link className="btn login" to={`/view-test/${test._id}`}>
                                     Обрати
                                 </Link>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => handleDeleteTest(test._id)}
-                                >
-                                    Видалити
-                                </button>
+                                {test.author === email && (
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => handleDeleteTest(test._id, test.author)}
+                                    >
+                                        Видалити
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            <div className="row cards">
+                {otherTests.length > 0 && (
+                    <div className="col-12">
+                        <h3>Доступні тести:</h3>
+                    </div>
+                )}
+                {otherTests.map((test) => (
+                    <div key={test._id} className="col-md-4 col-sm-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">{test.name}</h5>
+                                <p className="card-text">{test.description}</p>
+                                <p>{test.option}</p>
+                                <Link className="btn login" to={`/view-test/${test._id}`}>
+                                    Обрати
+                                </Link>
+                                {test.author === email && (
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => handleDeleteTest(test._id, test.author)}
+                                    >
+                                        Видалити
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
         </section>
     );
 }
