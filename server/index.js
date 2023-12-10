@@ -88,7 +88,7 @@ app.post('/addtest', async (req, res) => {
         option: option,
         description: description
     })
-    
+
     await test.save()
     res.send('200 Success')
 })
@@ -101,6 +101,11 @@ app.get("/adduser", (req, res) => {
         res.send({ loggedIn: false })
     }
 })
+
+app.get("/tests", async (req, res) => {
+    const tests = await testModel.find({});
+    res.status(200).json(tests);
+});
 
 app.post('/login', async (req, res) => {
     const email = req.body.email;

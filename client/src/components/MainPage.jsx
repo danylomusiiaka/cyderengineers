@@ -3,72 +3,84 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function MainPage() {
-    const [email, setEmail] = useState("")
-
-    Axios.defaults.withCredentials = true
+    const [email, setEmail] = useState("");
+    const [tests, setTests] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
         Axios.get("http://localhost:3001/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
 
-    });
+        Axios.get("http://localhost:3001/tests").then((response) => {
+            setTests(response.data);
+        });
+    }, []);
 
+    const categories = Array.from(new Set(tests.map(test => test.option)));
+
+    const filteredTests = tests.filter((test) =>
+        (!selectedCategory || test.option === selectedCategory) &&
+        test.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <section class="container">
+        <section className="container">
             <h2>Привіт, {email}!</h2>
-            <nav class="navbar">
-                <h2 class="navbar-brand">Доступні тести: </h2>
-                <div class="d-flex align-items-center">
-                    <input type="text" class="form-control" placeholder="Пошук..." />
-                    
-                    <div class="dropdown">
-                        <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-                            Категорія
+            <nav className="navbar">
+                <h2 className="navbar-brand">Доступні тести: </h2>
+                <div className="d-flex align-items-center">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Пошук..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+
+                    <div className="dropdown">
+                        <button type="button" className="btn dropdown-toggle" data-bs-toggle="dropdown">
+                            {selectedCategory ? selectedCategory : "Категорія"}
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Культура</a></li>
-                            <li><a class="dropdown-item" href="#">Мова</a></li>
-                            <li><a class="dropdown-item" href="#">Історія</a></li>
+                        <ul className="dropdown-menu">
+                            <li>
+                                <a className="dropdown-item" onClick={() => setSelectedCategory(null)}>
+                                    Всі
+                                </a>
+                            </li>
+                            {categories.map((category, index) => (
+                                <li key={index}>
+                                    <a
+                                        className={`dropdown-item${selectedCategory === category ? ' active' : ''}`}
+                                        onClick={() => setSelectedCategory(category)}
+                                    >
+                                        {category}
+                                    </a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    <Link class="btn sign-in" style={{ color: 'white' }} to="/create-test">
+                    <Link className="btn sign-in" style={{ color: 'white' }} to="/create-test">
                         Додати
                     </Link>
                 </div>
             </nav>
 
-
-            <div class="row">
-                <div class="col-md-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn login">Обрати</a>
+            <div className="row">
+                {filteredTests.map((test) => (
+                    <div key={test._id} className="col-md-4 col-sm-6">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">{test.name}</h5>
+                                <p className="card-text">{test.description}</p>
+                                <p>{test.option}</p>
+                                <Link   className="btn login">Обрати</Link>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn login">Обрати</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn login">Обрати</a>
-                        </div>
-                    </div>
-                </div>
+                ))}
             </div>
         </section>
     );
