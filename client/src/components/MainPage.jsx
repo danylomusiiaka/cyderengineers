@@ -16,7 +16,7 @@ function MainPage() {
         Axios.get("http://localhost:3001/tests").then((response) => {
             setTests(response.data);
         });
-    }, []);
+    });
 
     const categories = Array.from(new Set(tests.map(test => test.option)));
 
@@ -24,6 +24,17 @@ function MainPage() {
         (!selectedCategory || test.option === selectedCategory) &&
         test.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleDeleteTest = (testId) => {
+        try {
+            Axios.delete(`http://localhost:3001/tests/${testId}`);
+            Axios.get("http://localhost:3001/tests").then((response) => {
+                setTests(response.data);
+            });
+        } catch (error) {
+            console.error("Error deleting test:", error);
+        }
+    };
 
     return (
         <section className="container">
@@ -76,7 +87,15 @@ function MainPage() {
                                 <h5 className="card-title">{test.name}</h5>
                                 <p className="card-text">{test.description}</p>
                                 <p>{test.option}</p>
-                                <Link   className="btn login">Обрати</Link>
+                                <Link className="btn login" to={`/view-test/${test._id}`}>
+                                    Обрати
+                                </Link>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDeleteTest(test._id)}
+                                >
+                                    Видалити
+                                </button>
                             </div>
                         </div>
                     </div>

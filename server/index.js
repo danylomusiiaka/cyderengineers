@@ -8,7 +8,7 @@ const session = require('express-session')
 
 app.use(cors({
     origin: ['http://localhost:5173'],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", 'DELETE'],
     credentials: true
 }))
 app.use(express.json())
@@ -52,6 +52,10 @@ const testSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    author: {
+        type: String,
+        required: true
     }
 })
 
@@ -82,11 +86,13 @@ app.post('/addtest', async (req, res) => {
     const name = req.body.name
     const option = req.body.option
     const description = req.body.description
+    const author = req.body.author
 
     const test = new testModel({
         name: name,
         option: option,
-        description: description
+        description: description,
+        author: author
     })
 
     await test.save()
@@ -105,6 +111,14 @@ app.get("/adduser", (req, res) => {
 app.get("/tests", async (req, res) => {
     const tests = await testModel.find({});
     res.status(200).json(tests);
+});
+
+app.delete('/tests/:id', async (req, res) => {
+    const testId = req.params.id;
+    const deletedTest = await testModel.findByIdAndDelete(testId);
+    if (!deletedTest) {
+        return res.status(404).send('Test not found');
+    }
 });
 
 app.post('/login', async (req, res) => {

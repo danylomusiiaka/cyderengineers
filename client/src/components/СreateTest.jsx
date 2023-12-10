@@ -1,16 +1,26 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function CreateTest() {
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/adduser").then((response) => {
+            setEmail(response.data.user.email);
+        });
+    }, []);
+
     const addTest = async (values) => {
+        
         const response = await Axios.post('http://localhost:3001/addtest', {
             name: values.name,
             option: values.option,
             description: values.description,
+            author: email
         });
 
         if (response.status === 200) {
@@ -21,7 +31,7 @@ function CreateTest() {
     const initialValues = {
         name: '',
         option: '',
-        description: '',
+        description: ''
     };
 
     const validation = Yup.object().shape({
