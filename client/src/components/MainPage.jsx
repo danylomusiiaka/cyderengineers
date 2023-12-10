@@ -40,7 +40,7 @@ function MainPage() {
     return (
         <section className="container">
             <nav className="navbar">
-                <h2 className="navbar-brand">Привіт, {email}!</h2>
+                <h2 className="text-break" style={{ 'font-weight': '600'}}>Привіт, {email}!</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"

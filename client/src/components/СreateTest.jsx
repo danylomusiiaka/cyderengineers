@@ -37,12 +37,15 @@ function CreateTest() {
     const validation = Yup.object().shape({
         name: Yup.string().required("Поле імені є обов'язковим"),
         option: Yup.string().required("Категорія має бути обрана"),
+        description: Yup.string()
+            .required("Опис є обов'язковим")
+            .max(100, 'Опис повинен бути не більше 100 символів'),
     });
 
     return (
         <div className='auth-section'>
             <Formik initialValues={initialValues} validationSchema={validation} onSubmit={addTest}>
-                <Form className='formContainer'>
+                <Form className='formContainer createtest'>
                     <h1>Створити новий тест</h1>
                     <label>Ім'я: </label>
                     <Field id="inputData" name="name" />
@@ -56,7 +59,8 @@ function CreateTest() {
                     </Field>
                     <ErrorMessage name='option' component='span' />
                     <label>Опис: </label>
-                    <Field as="textarea" id="inputData" name="description" />
+                    <Field as="textarea" id="inputData" name="description" style={{ height: '150px' }} />
+                    <ErrorMessage name='description' component='span' />
                     <button type="submit">Створити</button>
                 </Form>
             </Formik>

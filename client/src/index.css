@@ -14,6 +14,7 @@ body {
 .login,
 .login:hover {
   border: 1px solid rgba(0, 208, 46, 0.5);
+  
 }
 
 h1 {
@@ -72,6 +73,10 @@ img {
   height: auto;
   padding: 20px;
   border-radius: 5px;
+}
+
+.createtest{
+  width: 600px;
 }
 
 .formContainer #inputData {
