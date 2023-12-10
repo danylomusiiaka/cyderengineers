@@ -40,7 +40,23 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+const testSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    option: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    }
+})
+
 const userModel = mongoose.model('users', userSchema)
+const testModel = mongoose.model('tests', testSchema)
 
 app.post('/adduser', async (req, res) => {
     const email = req.body.email
@@ -59,6 +75,21 @@ app.post('/adduser', async (req, res) => {
     })
     req.session.user = user
     await user.save()
+    res.send('200 Success')
+})
+
+app.post('/addtest', async (req, res) => {
+    const name = req.body.name
+    const option = req.body.option
+    const description = req.body.description
+
+    const test = new testModel({
+        name: name,
+        option: option,
+        description: description
+    })
+    
+    await test.save()
     res.send('200 Success')
 })
 
@@ -97,6 +128,8 @@ app.post('/logout', (req, res) => {
         res.sendStatus(200);
     });
 });
+
+
 
 
 app.listen(3001, () => {

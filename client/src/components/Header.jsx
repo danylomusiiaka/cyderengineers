@@ -11,7 +11,6 @@ function Header({ setAuth }) {
     useEffect(() => {
         Axios.get("http://localhost:3001/adduser").then((response) => {
             setEmail(response.data.user.email);
-
         });
     });
 
@@ -20,7 +19,6 @@ function Header({ setAuth }) {
         setEmail("");
         setAuth(false);
         navigate("/login");
-
     };
 
     return (

@@ -4,6 +4,7 @@ import WelcomePage from './components/WelcomePage'
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import MainPage from './components/MainPage';
+import CreateTest from './components/СreateTest'
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 
@@ -18,6 +19,7 @@ function App() {
       setLoading(false);
     });
   }, []);
+  
   return (
     <>
       <Router>
@@ -39,6 +41,7 @@ function App() {
               path="/sign-up"
               element={<SignUpPage emailFromWelcome={emailFromWelcome} />}
             />
+            <Route path="create-test" element={<CreateTest />} />
           </Routes>
         )}
       </Router>
