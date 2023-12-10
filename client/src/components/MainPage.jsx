@@ -17,8 +17,9 @@ function MainPage() {
 
     return (
         <section class="container">
+            <h2>Привіт, {email}!</h2>
             <nav class="navbar">
-                <h2 class="navbar-brand">Доступні знижки: </h2>
+                <h2 class="navbar-brand">Доступні тести: </h2>
                 <div class="d-flex align-items-center">
                     <input type="text" class="form-control" placeholder="Пошук..." />
                     
