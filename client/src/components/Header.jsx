@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
-function Header({ setAuth }) {
+function Header({ setAuth, isAuth }) {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("")
 
     Axios.defaults.withCredentials = true
 
-    useEffect(() => {
-        Axios.get("http://localhost:3001/adduser").then((response) => {
-            setEmail(response.data.user.email);
-        });
-    });
-
     const logout = async () => {
         await Axios.post("http://localhost:3001/logout");
-        setEmail("");
         setAuth(false);
         navigate("/login");
     };
@@ -25,7 +16,7 @@ function Header({ setAuth }) {
         <header className="navbar navbar-light bg-light px-4">
             <Link className="navbar-brand h1" to="/">Yukis</Link>
             <div className="form-inline">
-                {email ? (
+                {isAuth ? (
                     <button className="btn login mx-2" onClick={logout}>Log out</button>
                 ) : (
                     <>

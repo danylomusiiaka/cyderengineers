@@ -37,7 +37,7 @@ function LoginPage({ setAuth }) {
                 <Form className='formContainer'>
                     <h1>Логін</h1>
                     <label>Пошта: </label>
-                    <Field id="inputData" name="email" />
+                    <Field id="inputData" name="email" type="email" />
                     <ErrorMessage name='email' component='span' />
                     <label>Пароль: </label>
                     <Field id="inputData" name="password" type="password" />

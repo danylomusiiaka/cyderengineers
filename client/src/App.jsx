@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <Router>
-        <Header setAuth={setAuth} />
+        <Header isAuth={isAuth} setAuth={setAuth} />
         {!isLoading && (
           <Routes>
             <Route
