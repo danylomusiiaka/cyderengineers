@@ -1,23 +1,37 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+import { useState } from 'react';
 
 function SignUpPage() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const defaultEmail = queryParams.get('email') || '';
 
     const addUser = async (values) => {
-        const response = await Axios.post('http://localhost:3001/adduser', {
-            email: values.email,
-            password: values.password,
-        });
-        if (response.status === 200) {
-            navigate("/main", { state: { email: values.email } })
+        try {
+            const response = await Axios.post('http://localhost:3001/adduser', {
+                email: values.email,
+                password: values.password,
+            });
+
+            if (response.status === 200) {
+                navigate("/login");
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setErrorMessage('Ця пошта вже зареєстрована. Спробуйте іншу');
+            }
         }
     };
 
+
     const initialValues = {
-        email: '',
+        email: defaultEmail,
         password: '',
         confirmPassword: '',
     };
@@ -46,6 +60,7 @@ function SignUpPage() {
                     <ErrorMessage name='confirmPassword' component='span' />
                     <button type="submit">Зареєструватись</button>
                     <p>Вже маєте обліковий запис? <Link className='link' to="/login">Увійдіть</Link></p>
+                    {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
                 </Form>
             </Formik>
         </div>

@@ -1,4 +1,13 @@
-function WelcomePage() {
+import { useState } from "react";
+import { Link } from 'react-router-dom';
+
+function WelcomePage({ setEmailFromWelcome }) {
+    const [email, setEmail] = useState('');
+
+    const handleInputChange = (e) => {
+        setEmail(e.target.value);
+    };
+
     return (
         <section className="border row align-items-center mx-0" style={{ height: '550px' }}>
             <div className="col-md-3 justify-content-start d-xl-flex d-none px-0">
@@ -16,8 +25,16 @@ function WelcomePage() {
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <form className="input-group">
-                            <input type="text" className="form-control" placeholder="Your email address..." />
-                            <button type="button" className="btn input-group-append">Sign up</button>
+                            <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Your email address..."
+                                value={email}
+                                onChange={handleInputChange}
+                            />
+                            <Link to={`/sign-up?email=${email}`} className="btn input-group-append">
+                                Sign up
+                            </Link>
                         </form>
                     </div>
                 </div>

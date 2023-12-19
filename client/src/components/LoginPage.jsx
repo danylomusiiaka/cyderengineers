@@ -1,33 +1,54 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import Axios from 'axios';
+import { useState } from 'react';
 
+function LoginPage({ setAuth }) {
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
 
-function LoginPage() {
-    
+    const loginUser = async (values) => {
+        try {
+            const response = await Axios.post('http://localhost:3001/login', {
+                email: values.email,
+                password: values.password
+            });
+
+            if (response.status === 200) {
+                setAuth(true);
+                navigate('/');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                setErrorMessage('Неправильна пошта або пароль.');
+            }
+        }
+    };
 
     const validation = Yup.object().shape({
-        username: Yup.string().required("Поле імені є обов'язковим"),
+        email: Yup.string().required("Поле пошти є обов'язковим"),
         password: Yup.string().required("Поле паролю є обов'язковим"),
-    })
+    });
 
     return (
         <div className='auth-section'>
-            <Formik validationSchema={validation} >
+            <Formik initialValues={{ username: '', password: '' }} validationSchema={validation} onSubmit={loginUser}>
                 <Form className='formContainer'>
                     <h1>Логін</h1>
-                    <label>Ім'я користувача: </label>
-                    <Field id="inputData" name="username" />
-                    <ErrorMessage name='username' component='span' />
+                    <label>Пошта: </label>
+                    <Field id="inputData" name="email" type="email" />
+                    <ErrorMessage name='email' component='span' />
                     <label>Пароль: </label>
                     <Field id="inputData" name="password" type="password" />
                     <ErrorMessage name='password' component='span' />
-                    <button>Увійти</button>
+                    <button type="submit">Увійти</button>
                     <p>Не маєте облікового запису? <Link className='link' to="/sign-up">Зареєструйтесь</Link></p>
+                    {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
                 </Form>
             </Formik>
         </div>
-    )
+    );
 }
 
-export default LoginPage
+export default LoginPage;
