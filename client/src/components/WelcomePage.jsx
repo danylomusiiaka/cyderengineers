@@ -11,7 +11,7 @@ function WelcomePage({ setEmailFromWelcome }) {
     return (
         <section className="border row align-items-center mx-0" style={{ height: '550px' }}>
             <div className="col-md-3 justify-content-start d-xl-flex d-none px-0">
-                <img src="/first.png" alt="hi" className="img-fluid" />
+                <img src="welcomepage/first.png" className="img-fluid" />
             </div>
             <div className="col-xl-6 text-center">
                 <div className="row justify-content-center">
@@ -40,7 +40,7 @@ function WelcomePage({ setEmailFromWelcome }) {
                 </div>
             </div>
             <div className="col-md-3 justify-content-end d-xl-flex d-none px-0" >
-                <img src="/second.png" alt="h" className="img-fluid" />
+                <img src="welcomepage/second.png" className="img-fluid" />
             </div>
         </section>
     );

@@ -1,8 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 
 function Header({ setAuth, isAuth }) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     Axios.defaults.withCredentials = true
 
@@ -18,14 +19,16 @@ function Header({ setAuth, isAuth }) {
             <div className="form-inline">
                 {isAuth ? (
                     <>
-                        <Link className="btn login mx-2" to="/profile">Profile</Link>
                         <button className="btn login mx-2" onClick={logout}>Log out</button>
-                        <button className="utils">
-                            <img className="setting" src="setting 1.png" />
-                        </button>
-                        <button className="utils">
-                            <img class="user" src="user icon.png" />
-                        </button>
+                        {location.pathname === '/profile' ? (
+                            <button className="utils">
+                                <img className="setting" src="profile/settings.png" />
+                            </button>
+                        ) : (
+                            <Link className="utils" to="/profile">
+                                <img class="user" src="profile/user icon.png" />
+                            </Link>
+                        )}
                     </>
                 ) : (
                     <>

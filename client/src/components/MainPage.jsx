@@ -40,7 +40,7 @@ function MainPage() {
     return (
         <section className="container">
             <nav className="navbar">
-                <h2 className="text-break" style={{ 'font-weight': '600'}}>Привіт, {email}!</h2>
+                <h2 className="text-break" style={{ 'font-weight': '600' }}>Привіт, {email}!</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"
@@ -79,12 +79,10 @@ function MainPage() {
                 </div>
             </nav>
 
+            <div className="col-12">
+                <h3>Ваші створені тести:</h3>
+            </div>
             <div className="row cards">
-                {userTests.length > 0 && (
-                    <div className="col-12">
-                        <h3>Ваші створені тести:</h3>
-                    </div>
-                )}
                 {userTests.map((test) => (
                     <div key={test._id} className="col-md-4 col-sm-6">
                         <div className="card">
@@ -137,6 +135,11 @@ function MainPage() {
                         </div>
                     </div>
                 ))}
+                {userTests.length === 0 && otherTests.length === 0 && (
+                    <div className="col-12">
+                        <h3>Ви ще не створили жодного тесту</h3>
+                    </div>
+                )}
             </div>
 
         </section>
