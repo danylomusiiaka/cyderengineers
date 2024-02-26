@@ -17,7 +17,10 @@ function Header({ setAuth, isAuth }) {
             <Link className="navbar-brand h1" to="/">Yukis</Link>
             <div className="form-inline">
                 {isAuth ? (
-                    <button className="btn login mx-2" onClick={logout}>Log out</button>
+                    <>
+                        <Link className="btn login mx-2" to="/profile">Profile</Link>
+                        <button className="btn login mx-2" onClick={logout}>Log out</button>
+                    </>
                 ) : (
                     <>
                         <Link className="btn login mx-2" to="/login">Log in</Link>

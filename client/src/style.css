@@ -1,17 +1,12 @@
-* {
-  margin: 0;
-  padding: 0;
-}
 .container {
   width: calc(100% + 100px);
 }
+
 .header {
-  background: linear-gradient(
-    to right,
-    rgba(4, 208, 0, 0.6),
-    rgba(24, 255, 243, 0.8),
-    rgba(5, 208, 253, 0.8)
-  );
+  background: linear-gradient(to right,
+      rgba(4, 208, 0, 0.6),
+      rgba(24, 255, 243, 0.8),
+      rgba(5, 208, 253, 0.8));
 }
 
 .logo-and-links {
@@ -25,9 +20,7 @@ h1 {
   font-size: 40px;
   margin-right: auto;
 }
-nav {
-  font-family: sans-serif;
-}
+
 
 a {
   text-decoration: none;
@@ -37,63 +30,78 @@ a {
 .our-project {
   color: black;
 }
+
 .rating {
   margin-right: auto;
   color: black;
 }
+
 .user {
   width: 40px;
   margin-left: 325px;
   margin-right: 20px;
   transition: transform 0.3s ease;
 }
+
 .user:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
+
 .setting {
   width: 30px;
 }
+
 .setting:hover {
   cursor: pointer;
   animation: rotateRight 2s infinite linear;
 }
+
 @keyframes rotateRight {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .Nickname {
   padding-top: 60px;
   padding-bottom: 15px;
   font-size: 36px;
 }
+
 .user-2 {
   width: 125px;
   padding-top: 47px;
 }
+
 p {
   font-size: 20px;
   margin-top: 50px;
 }
+
 .clock {
   width: 16px;
 }
+
 .following {
   font-size: 18px;
   font-style: Inter;
 }
+
 .meeeen {
   width: 22px;
 }
+
 .static {
   margin-top: 75px;
   margin-bottom: 30px;
   font-size: 32px;
 }
+
 .block-days {
   background-color: rgba(146, 229, 177, 51%);
   border-radius: 30px;
@@ -117,16 +125,19 @@ p {
   margin-left: 37px;
   font-size: 30px;
 }
+
 .lig-name {
   width: 30px;
   height: 38px;
   margin-left: 10px;
   margin-top: 12px;
 }
+
 .lig {
   margin-left: 32px;
   font-size: 26px;
 }
+
 .liga {
   background-color: rgba(146, 229, 177, 51%);
   border-radius: 30px;
@@ -134,10 +145,12 @@ p {
   height: 70px;
   border: 2px solid rgb(72, 194, 72);
 }
+
 .potic-lig {
   font-size: 12px;
   margin-left: 64px;
 }
+
 .block-points {
   margin-top: 144px;
   background-color: rgba(146, 229, 177, 51%);
@@ -147,6 +160,7 @@ p {
   margin-bottom: 35px;
   border: 2px solid rgb(72, 194, 72);
 }
+
 .points {
   margin-left: 52px;
 }
@@ -155,24 +169,29 @@ p {
   border-top: 3px solid #777;
   border-radius: 2px;
 }
+
 .mack {
   width: 28px;
   height: 48px;
   margin-left: 13px;
   margin-top: 0;
 }
+
 .points {
   margin-left: 32px;
   font-size: 26px;
 }
+
 .avarage-ponits {
   font-size: 12px;
   margin-left: 64px;
 }
+
 .level {
   font-size: 12px;
   margin-left: 82px;
 }
+
 .medal {
   width: 28px;
   height: 45px;
