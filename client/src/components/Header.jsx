@@ -20,6 +20,12 @@ function Header({ setAuth, isAuth }) {
                     <>
                         <Link className="btn login mx-2" to="/profile">Profile</Link>
                         <button className="btn login mx-2" onClick={logout}>Log out</button>
+                        <button className="utils">
+                            <img className="setting" src="setting 1.png" />
+                        </button>
+                        <button className="utils">
+                            <img class="user" src="user icon.png" />
+                        </button>
                     </>
                 ) : (
                     <>

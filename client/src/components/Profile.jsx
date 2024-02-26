@@ -4,13 +4,9 @@ function Profile() {
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-sm-3">
-                        <h3 class="Nickname"><strong>Alex Tymanewich</strong></h3>
+                        <h1 class="Nickname">Alex Tymanewich</h1>
                         <p>
                             <img class="clock" src="clock 1.png" /> Приєднався у квітні 2024
-                        </p>
-                        <p class="following">
-                            <img class="meeeen" src="meeeeen.png" /> 13 Слідкування / 54
-                            Слідкувачі
                         </p>
                     </div>
                     <div class="col">
@@ -21,43 +17,42 @@ function Profile() {
             <div class="container main-info">
                 <div class="row align-items-center">
                     <div class="col-sm-3">
-                        <h3 class="static"><strong>Статистика</strong></h3>
+                        <h3 class="static">Статистика</h3>
                         <div class="block-days">
                             <img class="fire" src="Group.png" alt="Group Icon" />
-                            <span class="number"><strong>12</strong></span>
-                            <p class="days">Кількість днів</p>
+                            <span class="number">12</span>
+                            <p class="description">Кількість днів</p>
                         </div>
                         <div class="liga">
                             <img class="lig-name" src="row_1.png" alt="Group Icon" />
-                            <span class="lig"><strong>Ліга</strong></span>
-                            <p class="potic-lig">Поточна ліга</p>
+                            <span class="number">Ліга</span>
+                            <p class="description">Поточна ліга</p>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="block-points">
                             <img class="mack" src="electric.png" alt="Group Icon" />
-                            <span class="points"><strong>100</strong></span>
-                            <p class="avarage-ponits">Кількість балів</p>
+                            <span class="number">100</span>
+                            <p class="description">Кількість балів</p>
                         </div>
                         <div class="liga">
                             <img class="medal" src="icon.png" alt="Group Icon" />
                             <span class="number"><strong>11</strong></span>
-                            <p class="level">Рівень</p>
+                            <p class="description">Рівень</p>
                         </div>
                     </div>
                     <div class="col-xl">
-                        <div class="friends-block">
-                            <div class="friend-image-container">
-                                <img class="friend" src="image.png" alt="Group Icon" />
-                            </div>
-                            <div class="friend-text">
-                                <span class="invite"
-                                ><strong>Запросіть своїх друзів</strong></span
-                                >
-                                <p>Розкажи своїм друзям про YUkis</p>
-                                <button class="invite-button">Запросити друзів</button>
-                            </div>
+                        <div class="friend">
+                            <img src="/image.png" alt="Your Image"/>
+                            <p>Запросіть своїх друзів
+                                Розкажи своїм друзям про YUkis</p>
                         </div>
+                        <div class="friend-container">
+                            <button>Запросити друзів</button>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
