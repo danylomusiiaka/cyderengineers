@@ -38,9 +38,9 @@ function MainPage() {
     };
 
     return (
-        <section className="container">
+        <section className="container" style={{ 'margin-top': '30px' }}>
             <nav className="navbar">
-                <h2 className="text-break" style={{ 'font-weight': '600' }}>Привіт, {email}!</h2>
+                <h2 className="text-break" style={{ 'font-weight': '600' }}>Вибери гру для себе</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"
@@ -79,31 +79,41 @@ function MainPage() {
                 </div>
             </nav>
 
-            <div className="col-12">
-                <h3>Ваші створені тести:</h3>
-            </div>
+            {userTests.length > 0 && (
+                <div className="col-12">
+                    <h3>Ваші створені тести:</h3>
+                </div>
+            )}
+
             <div className="row cards">
                 {userTests.map((test) => (
-                    <div key={test._id} className="col-md-4 col-sm-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">{test.name}</h5>
-                                <p className="card-text">{test.description}</p>
-                                <p>{test.option}</p>
-                                <Link className="btn login" to={`/view-test/${test._id}`}>
-                                    Обрати
-                                </Link>
-                                {test.author === email && (
-                                    <button
-                                        className="btn btn-danger"
-                                        onClick={() => handleDeleteTest(test._id, test.author)}
-                                    >
-                                        Видалити
-                                    </button>
-                                )}
+                    <>
+                        <div key={test._id} className="col-md-4 col-sm-6">
+                            <div>
+                                <img src="mainpage/crown.jpg" alt="" className='crown' />
+                                18/40
+                            </div>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">{test.name}</h5>
+                                    <p className="card-text">{test.description}</p>
+                                    <p>{test.option}</p>
+                                    <Link className="btn login" to={`/view-test/${test._id}`}>
+                                        Обрати
+                                    </Link>
+                                    {test.author === email && (
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => handleDeleteTest(test._id, test.author)}
+                                        >
+                                            Видалити
+                                        </button>
+                                    )}
+
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </>
                 ))}
             </div>
 
