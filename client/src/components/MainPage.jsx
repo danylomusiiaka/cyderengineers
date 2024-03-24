@@ -125,6 +125,10 @@ function MainPage() {
                 )}
                 {otherTests.map((test) => (
                     <div key={test._id} className="col-md-4 col-sm-6">
+                        <div>
+                            <img src="mainpage/crown.jpg" alt="" className='crown' />
+                            18/40
+                        </div>
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">{test.name}</h5>

@@ -2,14 +2,19 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
 function Header({ isAuth }) {
-    
+
     Axios.defaults.withCredentials = true
 
     const navbarBgClass = isAuth ? 'bg-authenticated' : 'bg-unauthenticated';
 
     return (
         <header className={`navbar navbar-light bg-light px-4 ${navbarBgClass}`}>
-            <Link className="navbar-brand h1" to="/">Yukis</Link>
+            <div className='navbar-left'>
+                <Link className="navbar-brand h1" to="/">Yukis</Link>
+                <Link className='links' to="/">Наш проєкт</Link>
+                <Link className='links' to="/">Твій рейтинг</Link>
+            </div>
+            
             <div className="form-inline">
                 {isAuth ? (
                     <>
