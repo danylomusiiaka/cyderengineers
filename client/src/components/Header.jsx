@@ -26,7 +26,7 @@ function Header({ setAuth, isAuth }) {
                             </button>
                         ) : (
                             <Link className="utils" to="/profile">
-                                <img class="user" src="profile/user icon.png" />
+                                <img className="user" src="profile/user icon.png" />
                             </Link>
                         )}
                     </>

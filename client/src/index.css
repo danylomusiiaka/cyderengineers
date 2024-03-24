@@ -143,3 +143,19 @@ nav .btn {
 .add-btn {
   width: 180px;
 }
+
+header{
+  background-image: linear-gradient(to right, #04D0005C, #18FFF35C, #05D0FD5C);
+}
+
+.headerbuttons{
+  margin-right: 600px;
+}
+
+.btn{
+  margin-right: 20px;
+}
+
+.firstparagraph, .secondparagraph, .thirdparagraph {
+  max-width: 50%;
+}

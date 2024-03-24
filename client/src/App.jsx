@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     Axios.get("http://localhost:3001/adduser").then((response) => {
-      setAuth(response.data.loggedIn);
+      setAuth(false);
       setLoading(false);
     });
   }, []);
