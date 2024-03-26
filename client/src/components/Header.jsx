@@ -18,7 +18,7 @@ function Header({ isAuth }) {
             <div className="form-inline">
                 {isAuth ? (
                     <>
-                        <button className="btn login mx-2" onClick={logout}>Log out</button>
+                        
                         {location.pathname === '/profile' ? (
                             <button className="utils">
                                 <img className="setting" src="profile/settings.png" />
