@@ -169,3 +169,7 @@ nav .btn {
 .add-btn {
   width: 180px;
 }
+
+.firstparagraph, .secondparagraph, .thirdparagraph {
+  max-width: 50%;
+}
