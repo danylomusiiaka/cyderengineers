@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function Profile() {
+function Profile({ setAuth }) {
     const [email, setEmail] = useState("");
     const [tests, setTests] = useState([]);
+    const navigate = useNavigate();
+
+    Axios.defaults.withCredentials = true
 
     useEffect(() => {
         Axios.get("http://localhost:3001/adduser").then((response) => {
@@ -16,19 +19,10 @@ function Profile() {
         });
     });
 
-    const filteredTests = tests.filter((test) =>
-        (!selectedCategory || test.option === selectedCategory) &&
-        test.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const userTests = filteredTests.filter((test) => test.author === email);
-
-    const handleDeleteTest = (testId, author) => {
-        if (author === email) {
-            Axios.delete(`http://localhost:3001/tests/${testId}`);
-            Axios.get("http://localhost:3001/tests").then((response) => {
-                setTests(response.data);
-            });
-        }
+    const logout = async () => {
+        await Axios.post("http://localhost:3001/logout");
+        setAuth(false);
+        navigate("/login");
     };
 
     return (
@@ -38,11 +32,12 @@ function Profile() {
                     <div class="col-sm-10">
                         <h1 class="Nickname">{email}</h1>
                         <p>
-                            <img class="clock" src="profile/clock.png" /> Приєднався у квітні 2024
+                            <img class="clock" src="profile/clock.png" /> Приєднався y квітні 2024
                         </p>
                     </div>
                     <div class="col">
                         <img class="user-2" src="profile/user icon.png" />
+                        <button className="btn login mx-2" onClick={logout}>Log out</button>
                     </div>
                 </div>
             </div>
@@ -89,40 +84,7 @@ function Profile() {
                 </div>
             </div>
 
-            <div className='container main-info about-user-tests'>
-                <div className="row cards">
-                    <div className="col-12">
-                        <h3>Ваші створені тести:</h3>
-                    </div>
-                    {userTests.map((test) => (
-                        <div key={test._id} className="col-md-4 col-sm-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">{test.name}</h5>
-                                    <p className="card-text">{test.description}</p>
-                                    <p>{test.option}</p>
-                                    <Link className="btn login" to={`/view-test/${test._id}`}>
-                                        Обрати
-                                    </Link>
-                                    {test.author === email && (
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() => handleDeleteTest(test._id, test.author)}
-                                        >
-                                            Видалити
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {userTests.length === 0 && (
-                    <div className="col-12">
-                        <h3>Ви ще не створили жодного тесту</h3>
-                    </div>
-                )}
-            </div>
+
         </>
     );
 }

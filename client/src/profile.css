@@ -34,7 +34,7 @@ a {
 }
 
 .user {
-  width: 40px;
+  width: 45px;
   transition: transform 0.3s ease;
 }
 
@@ -44,7 +44,7 @@ a {
 }
 
 .setting {
-  width: 30px;
+  width: 35px;
   transition: transform 0.3s ease;
 }
 
@@ -56,6 +56,7 @@ a {
 .utils {
   border: 0cap;
   background: transparent;
+  margin-left: 40px;
 }
 
 @keyframes rotateRight {

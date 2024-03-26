@@ -1,21 +1,20 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
-function Header({ setAuth, isAuth }) {
-    const navigate = useNavigate();
-    const location = useLocation();
+function Header({ isAuth }) {
 
     Axios.defaults.withCredentials = true
 
-    const logout = async () => {
-        await Axios.post("http://localhost:3001/logout");
-        setAuth(false);
-        navigate("/login");
-    };
+    const navbarBgClass = isAuth ? 'bg-authenticated' : 'bg-unauthenticated';
 
     return (
-        <header className="navbar navbar-light bg-light px-4">
-            <Link className="navbar-brand h1" to="/">Yukis</Link>
+        <header className={`navbar navbar-light bg-light px-4 ${navbarBgClass}`}>
+            <div className='navbar-left'>
+                <Link className="navbar-brand h1" to="/">Yukis</Link>
+                <Link className='links' to="/">Наш проєкт</Link>
+                <Link className='links' to="/">Твій рейтинг</Link>
+            </div>
+            
             <div className="form-inline">
                 {isAuth ? (
                     <>

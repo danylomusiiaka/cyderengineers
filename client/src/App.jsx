@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <Router>
-        <Header isAuth={isAuth} setAuth={setAuth} />
+        <Header isAuth={isAuth} />
         {!isLoading && (
           <Routes>
             <Route
@@ -43,7 +43,7 @@ function App() {
               element={<SignUpPage emailFromWelcome={emailFromWelcome} />}
             />
             <Route path="create-test" element={<CreateTest />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<Profile setAuth={setAuth} />} />
           </Routes>
         )}
       </Router>
