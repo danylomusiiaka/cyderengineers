@@ -14,20 +14,16 @@ function Header({ isAuth }) {
                 <Link className='links' to="/">Наш проєкт</Link>
                 <Link className='links' to="/">Твій рейтинг</Link>
             </div>
-            
+
             <div className="form-inline">
                 {isAuth ? (
                     <>
-                        
-                        {location.pathname === '/profile' ? (
-                            <button className="utils">
-                                <img className="setting" src="profile/settings.png" />
-                            </button>
-                        ) : (
-                            <Link className="utils" to="/profile">
-                                <img class="user" src="profile/user icon.png" />
-                            </Link>
-                        )}
+                        <Link className="utils" to="/profile">
+                            <img class="user" src="profile/user icon.png" />
+                        </Link>
+                        <button className="utils">
+                            <img className="setting" src="profile/settings.png" />
+                        </button>
                     </>
                 ) : (
                     <>
