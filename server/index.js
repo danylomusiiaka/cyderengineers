@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: false
 }))
 
-mongoose.connect("mongodb://127.0.0.1:27017/yukisdb");
+mongoose.connect("mongodb+srv://danyatest:f2FBIDHCexfLxnb6@cluster0.xsfy3dz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
 const userSchema = new mongoose.Schema({
     email: {
