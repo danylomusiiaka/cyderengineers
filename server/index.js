@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:8080'],
     methods: ["GET", "POST", 'DELETE'],
     credentials: true
 }))
