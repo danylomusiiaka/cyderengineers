@@ -16,7 +16,7 @@ function MainPage() {
         Axios.get("http://localhost:3001/tests").then((response) => {
             setTests(response.data);
         });
-    });
+    },[]);
 
     const categories = Array.from(new Set(tests.map(test => test.option)));
 

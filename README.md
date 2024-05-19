@@ -6,27 +6,14 @@
 
 > **NOTE**: Для того щоб перевести додаток в продакшин - значення в файлі .env `NODE_ENV=dev` на `NODE_ENV=prod`
 
-Для того щоб розгорнути додаток в Docker:
+Для того щоб розгорнути додаток:
 
 ```bash
-docker network create traefik
-docker-compose build
-docker-compose up -d
+.\start.ps1
 ```
 
-Всі наступні запуски 
-
-```bash
-docker-compose up -d
-```
 
 > **NOTE**: після закінчення `docker-compose down`
-
-Після запуску `docker-compose up -d` 
-
-```
-http://localhost:8080/
-```
 
 Апі 
 
