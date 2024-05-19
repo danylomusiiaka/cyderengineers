@@ -13,7 +13,11 @@
 ```
 
 
-> **NOTE**: після закінчення `docker-compose down`
+Після закінчення користування додатком:
+```bash
+docker-compose down
+```
+ 
 
 Апі 
 
