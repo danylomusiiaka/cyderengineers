@@ -10,7 +10,7 @@ function LoginPage({ setAuth }) {
 
     const loginUser = async (values) => {
         try {
-            const response = await Axios.post('http://localhost:3001/login', {
+            const response = await Axios.post('http://localhost:3001/users/login', {
                 email: values.email,
                 password: values.password
             });
@@ -33,7 +33,7 @@ function LoginPage({ setAuth }) {
 
     return (
         <div className='auth-section'>
-            <Formik initialValues={{ username: '', password: '' }} validationSchema={validation} onSubmit={loginUser}>
+            <Formik initialValues={{ email: '', password: '' }} validationSchema={validation} onSubmit={loginUser}>
                 <Form className='formContainer'>
                     <h1>Логін</h1>
                     <label>Пошта: </label>

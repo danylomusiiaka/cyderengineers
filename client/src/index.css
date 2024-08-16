@@ -19,6 +19,14 @@ body {
   text-decoration: none;
 }
 
+.text-break {
+ font-weight: 600; 
+}
+
+.container {
+  margin-top: 30px;
+}
+
 
 .sign-in {
   background: linear-gradient(89.85deg, rgba(0, 208, 46, 0.5) 3.03%, #00D0C5 96.97%);

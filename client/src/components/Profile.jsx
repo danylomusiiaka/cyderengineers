@@ -10,7 +10,7 @@ function Profile({ setAuth }) {
     Axios.defaults.withCredentials = true
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/adduser").then((response) => {
+        Axios.get("http://localhost:3001/users/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
 
@@ -20,7 +20,7 @@ function Profile({ setAuth }) {
     });
 
     const logout = async () => {
-        await Axios.post("http://localhost:3001/logout");
+        await Axios.post("http://localhost:3001/users/logout");
         setAuth(false);
         navigate("/login");
     };

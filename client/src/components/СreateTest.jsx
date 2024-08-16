@@ -9,7 +9,7 @@ function CreateTest() {
     const [email, setEmail] = useState("");
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/adduser").then((response) => {
+        Axios.get("http://localhost:3001/users/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
     }, []);

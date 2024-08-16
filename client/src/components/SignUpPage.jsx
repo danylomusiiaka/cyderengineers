@@ -14,7 +14,7 @@ function SignUpPage() {
 
     const addUser = async (values) => {
         try {
-            const response = await Axios.post('http://localhost:3001/adduser', {
+            const response = await Axios.post('http://localhost:3001/users/adduser', {
                 email: values.email,
                 password: values.password,
             });

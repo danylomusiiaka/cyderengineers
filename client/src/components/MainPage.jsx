@@ -9,7 +9,7 @@ function MainPage() {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/adduser").then((response) => {
+        Axios.get("http://localhost:3001/users/adduser").then((response) => {
             setEmail(response.data.user.email);
         });
 
@@ -38,9 +38,9 @@ function MainPage() {
     };
 
     return (
-        <section className="container" style={{ 'margin-top': '30px' }}>
+        <section className="container">
             <nav className="navbar">
-                <h2 className="text-break" style={{ 'font-weight': '600' }}>Вибери гру для себе</h2>
+                <h2 className="text-break">Вибери гру для себе</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"
