@@ -40,10 +40,10 @@ export default function Header() {
         ) : (
           <>
             <Link className='btn login mx-2' to='/login'>
-              Log in
+              Вхід
             </Link>
             <Link className='btn sign-in' to='/sign-up'>
-              Sign up
+              Реєстрація
             </Link>
           </>
         )}

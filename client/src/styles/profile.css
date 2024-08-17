@@ -75,11 +75,36 @@ a {
 }
 
 .user-2 {
-  width: 125px;
-  padding-top: 47px;
+  width: 170px;
+  margin-top: 60px;
 }
 
+@media (min-width: 1200px) {
+  .user-2-mobile {
+    display: none;
+  }
+}
 
+@media (max-width: 1200px) {
+  .user-2 {
+    display: none;
+  }
+  .user-2-mobile{
+    width: 150px;
+  }
+  .profile-controls{
+    display: flex;
+    justify-content: space-between;
+  }
+  .profile-controls div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .Nickname{
+    font-size: 30px;
+  }
+}
 
 .clock {
   width: 16px;

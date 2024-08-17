@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import TestCard from "../components/TestCard";
 import Dropdown from "../components/Dropdown";
 import Loading from "../components/Loading";
+import ConfirmationModal from "../components/ConfirmDelete";
 
 function MainPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ function MainPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [testToDelete, setTestToDelete] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,12 +62,24 @@ function MainPage() {
   const userTests = filteredTests.filter((test) => test.author === email);
   const otherTests = filteredTests.filter((test) => test.author !== email);
 
-  const handleDeleteTest = async (testId, author) => {
-    if (author === email) {
-      await Axios.delete(`http://localhost:3001/tests/${testId}`, {
+  const handleDeleteTest = async () => {
+    if (testToDelete) {
+      await Axios.delete(`http://localhost:3001/tests/${testToDelete}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
     }
+    setModalOpen(false);
+    setTestToDelete(null);
+  };
+
+  const openModal = (testId) => {
+    setTestToDelete(testId);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setTestToDelete(null);
   };
 
   if (loading) {
@@ -104,7 +119,12 @@ function MainPage() {
 
       <div className='row cards'>
         {userTests.map((test) => (
-          <TestCard key={test._id} test={test} email={email} handleDeleteTest={handleDeleteTest} />
+          <TestCard
+            key={test._id}
+            test={test}
+            email={email}
+            handleDeleteTest={() => openModal(test._id)}
+          />
         ))}
       </div>
 
@@ -116,7 +136,12 @@ function MainPage() {
         )}
 
         {otherTests.map((test) => (
-          <TestCard key={test._id} test={test} email={email} handleDeleteTest={handleDeleteTest} />
+          <TestCard
+            key={test._id}
+            test={test}
+            email={email}
+            handleDeleteTest={() => openModal(test._id)}
+          />
         ))}
 
         {userTests.length === 0 && otherTests.length === 0 && (
@@ -125,6 +150,8 @@ function MainPage() {
           </div>
         )}
       </div>
+
+      <ConfirmationModal open={modalOpen} onClose={closeModal} onConfirm={handleDeleteTest} str={'цей тест'} />
     </section>
   );
 }

@@ -8,20 +8,23 @@ export function AuthProvider({ children }) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
 
-    if (token) {
-      Axios.get("http://localhost:3001/users/status", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => {
+      if (token) {
+        const response = await Axios.get("http://localhost:3001/users/status", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setAuth(response.data.loggedIn);
-      });
-    } else {
-      setAuth(false);
-    }
-    setLoading(false);
+      } else {
+        setAuth(false);
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   return (

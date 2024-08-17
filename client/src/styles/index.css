@@ -1,9 +1,14 @@
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .bg-authenticated {
-  background: linear-gradient(90deg, rgba(4, 208, 0, 0.36) 36.53%, rgba(24, 255, 243, 0.36) 63.67%, rgba(5, 208, 253, 0.36) 75.76%);
+  background: linear-gradient(
+    90deg,
+    rgba(4, 208, 0, 0.36) 36.53%,
+    rgba(24, 255, 243, 0.36) 63.67%,
+    rgba(5, 208, 253, 0.36) 75.76%
+  );
 }
 
 .navbar-brand {
@@ -20,21 +25,29 @@ body {
 }
 
 .text-break {
- font-weight: 600; 
+  font-weight: 600;
 }
 
 .container {
   margin-top: 30px;
 }
 
-
 .sign-in {
-  background: linear-gradient(89.85deg, rgba(0, 208, 46, 0.5) 3.03%, #00D0C5 96.97%);
+  background: linear-gradient(89.85deg, rgba(0, 208, 46, 0.5) 3.03%, #00d0c5 96.97%);
+}
+
+.sign-in:hover {
+  background: linear-gradient(89.85deg, rgba(1, 183, 40, 0.5) 3.03%, #00d0c5 96.97%);
 }
 
 .login,
 .login:hover {
+  
   border: 1px solid rgba(0, 208, 46, 0.5);
+}
+
+.login:hover {
+  background-color: rgb(240, 237, 237);
 }
 
 h1 {
@@ -58,7 +71,6 @@ img {
   margin-bottom: 5px;
 }
 
-
 .input-group-append {
   background: rgba(0, 208, 197, 1);
   color: white;
@@ -66,12 +78,8 @@ img {
 }
 
 .input-group-append:hover {
-  background-color: #039c8a;
+  background-color: #04c2ab;
   color: white;
-}
-
-.form-inline .btn {
-  width: 100px;
 }
 
 @media (max-width: 450px) {
@@ -82,7 +90,6 @@ img {
   .navbar {
     margin: 10px !important;
   }
-
 }
 
 .auth-section {
@@ -158,7 +165,7 @@ span {
 }
 
 .card {
-  border: 3px solid rgba(115, 224, 143, 1)
+  border: 3px solid rgba(115, 224, 143, 1);
 }
 
 h3 {
@@ -178,6 +185,8 @@ nav .btn {
   width: 180px;
 }
 
-.firstparagraph, .secondparagraph, .thirdparagraph {
+.firstparagraph,
+.secondparagraph,
+.thirdparagraph {
   max-width: 50%;
 }

@@ -28,12 +28,12 @@ function WelcomePage({ setEmailFromWelcome }) {
               <input
                 type='email'
                 className='form-control'
-                placeholder='Your email address...'
+                placeholder='Введіть вашу пошту...'
                 value={email}
                 onChange={handleInputChange}
               />
               <Link to={`/sign-up?email=${email}`} className='btn input-group-append'>
-                Sign up
+                Реєстрація
               </Link>
             </form>
           </div>

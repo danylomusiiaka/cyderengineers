@@ -18,7 +18,7 @@ function LoginPage() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token); // Збереження токену
+        localStorage.setItem("token", response.data.token);
         setAuth(true);
         navigate("/");
       }

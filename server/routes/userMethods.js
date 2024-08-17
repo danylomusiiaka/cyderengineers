@@ -59,4 +59,26 @@ router.post("/login", async (req, res) => {
   res.json({ token });
 });
 
+router.delete("/delete", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).send("No token provided");
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      return res.status(401).send("Invalid token");
+    }
+
+    try {
+      await userModel.findByIdAndDelete(decoded.id);
+      res.status(200).send("Profile deleted successfully");
+    } catch (error) {
+      res.status(500).send("Error deleting profile");
+    }
+  });
+});
+
+
 module.exports = router;
