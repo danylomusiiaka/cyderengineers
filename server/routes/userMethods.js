@@ -1,6 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const userModel = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: "../.env" });
+
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+    expiresIn: "2h",
+  });
+};
 
 router.post("/adduser", async (req, res) => {
   const { email, password } = req.body;
@@ -11,47 +19,44 @@ router.post("/adduser", async (req, res) => {
     return res.status(400).send("Email already registered");
   }
 
-  const user = new userModel({
-    email,
-    password
-  });
-
-  req.session.user = user;
+  const user = new userModel({ email, password });
   await user.save();
-  res.send("200 Success");
+  const token = generateToken(user);
+  res.json({ token });
 });
 
 router.get("/status", (req, res) => {
-  if (req.session.user) {
-    res.send({ loggedIn: true, user: req.session.user });
-  } else {
-    res.send({ loggedIn: false });
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.send({ loggedIn: false });
   }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.send({ loggedIn: false });
+    }
+    res.send({ loggedIn: true, user: decoded });
+  });
 });
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await userModel.findOne({ email, password });
+  const user = await userModel.findOne({ email });
 
   if (!user) {
     return res.status(401).send("Invalid email or password");
   }
 
-  req.session.user = user;
-  await user.save();
-  res.send("200 Success");
-});
+  const isMatch = await user.comparePassword(password);
 
-router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error destroying session:", err);
-      return res.status(500).send("Internal Server Error");
-    }
-    res.clearCookie("userID");
-    res.sendStatus(200);
-  });
+  if (!isMatch) {
+    return res.status(401).send("Invalid email or password");
+  }
+
+  const token = generateToken(user);
+  res.json({ token });
 });
 
 module.exports = router;

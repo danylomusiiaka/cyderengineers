@@ -2,10 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const mongoose = require("./config/mongodb"); 
+const http = require("http");
+const mongoose = require("./config/mongodb");
+const { setupWebSocketServer } = require("./config/websocket");
 
 const app = express();
+const server = http.createServer(app);
+
+// Initialize WebSocket server
+setupWebSocketServer(server);
 
 // Middleware
 app.use(
@@ -19,23 +24,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-  session({
-    key: "userID",
-    secret: "123456",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-// Маршрути
+// Routes
 const userRoutes = require("./routes/userMethods");
 const testRoutes = require("./routes/testMethods");
 
 app.use("/users", userRoutes);
 app.use("/tests", testRoutes);
 
-// Слухаємо порт
-app.listen(3001, () => {
-  console.log("connected to port 3001");
+// Server
+server.listen(3001, () => {
+  console.log("Server is listening on port 3001");
 });

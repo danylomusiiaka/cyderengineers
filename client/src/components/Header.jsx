@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-function Header() {
+export default function Header() {
   Axios.defaults.withCredentials = true;
 
   const { isAuth, isLoading } = useAuth();
 
   if (isLoading) {
     return null;
-    }
-    
+  }
+
   const navbarBgClass = isAuth ? "bg-authenticated" : "bg-unauthenticated";
 
   return (
@@ -51,5 +51,3 @@ function Header() {
     </header>
   );
 }
-
-export default Header;

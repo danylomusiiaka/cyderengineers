@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const testModel = require("../models/testModel");
+const { broadcast } = require("../config/websocket");
+
 
 router.post("/addtest", async (req, res) => {
   const { name, option, description, author } = req.body;
@@ -13,7 +15,10 @@ router.post("/addtest", async (req, res) => {
   });
 
   await test.save();
-  res.send("200 Success");
+
+  broadcast({ type: "add", test });
+
+  res.status(200).send("200 Success");
 });
 
 router.get("/", async (req, res) => {
@@ -24,9 +29,13 @@ router.get("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const testId = req.params.id;
   const deletedTest = await testModel.findByIdAndDelete(testId);
+
   if (!deletedTest) {
     return res.status(404).send("Test not found");
   }
+
+  broadcast({ type: "delete", testId });
+
   res.send("Test deleted");
 });
 

@@ -8,11 +8,21 @@ export function AuthProvider({ children }) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/users/status").then((response) => {
-      setAuth(response.data.loggedIn);
-      setLoading(false);
-    });
-  }, [isAuth]);
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      Axios.get("http://localhost:3001/users/status", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((response) => {
+        setAuth(response.data.loggedIn);
+      });
+    } else {
+      setAuth(false);
+    }
+    setLoading(false);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isAuth, setAuth, isLoading }}>{children}</AuthContext.Provider>

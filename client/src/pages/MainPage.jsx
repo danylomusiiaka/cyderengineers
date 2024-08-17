@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-import TestCard from "../components/TestCard"; 
+import TestCard from "../components/TestCard";
 import Dropdown from "../components/Dropdown";
+import Loading from "../components/Loading";
 
 function MainPage() {
   const [email, setEmail] = useState("");
@@ -12,11 +13,12 @@ function MainPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-
     const fetchData = async () => {
       try {
-        const userResponse = await Axios.get("http://localhost:3001/users/status");
+        const token = localStorage.getItem("token");
+        const userResponse = await Axios.get("http://localhost:3001/users/status", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setEmail(userResponse.data.user.email);
 
         const testsResponse = await Axios.get("http://localhost:3001/tests");
@@ -31,6 +33,22 @@ function MainPage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:3001");
+
+    socket.addEventListener("message", (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "add") {
+        setTests((prevTests) => [...prevTests, message.test]);
+      } else if (message.type === "delete") {
+        setTests((prevTests) => prevTests.filter((test) => test._id !== message.testId));
+      }
+    });
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   const categories = Array.from(new Set(tests.map((test) => test.option)));
 
   const filteredTests = tests.filter(
@@ -43,22 +61,14 @@ function MainPage() {
 
   const handleDeleteTest = async (testId, author) => {
     if (author === email) {
-      await Axios.delete(`http://localhost:3001/tests/${testId}`);
-      const response = await Axios.get("http://localhost:3001/tests");
-      setTests(response.data);
+      await Axios.delete(`http://localhost:3001/tests/${testId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
     }
   };
 
   if (loading) {
-    return (
-      <div className='loading-container'>
-        <div className='loader'>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -114,8 +124,7 @@ function MainPage() {
             <h3>Ви ще не створили жодного тесту</h3>
           </div>
         )}
-          </div>
-          
+      </div>
     </section>
   );
 }
