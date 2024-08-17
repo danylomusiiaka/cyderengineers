@@ -9,10 +9,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isLogined: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const userModel = mongoose.model("users", userSchema);

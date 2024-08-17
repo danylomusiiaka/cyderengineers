@@ -1,69 +1,46 @@
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import WelcomePage from "./components/WelcomePage";
-import LoginPage from "./components/LoginPage";
-import SignUpPage from "./components/SignUpPage";
-import MainPage from "./components/MainPage";
-import CreateTest from "./components/СreateTest";
-import Profile from "./components/Profile";
-import { useEffect, useState } from "react";
-import Axios from "axios";
+import WelcomePage from "./pages/WelcomePage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import MainPage from "./pages/MainPage";
+import CreateTest from "./pages/СreateTest";
+import Profile from "./pages/Profile";
+import { useState } from "react";
 
 function App() {
-  const [isAuth, setAuth] = useState(false);
   const [emailFromWelcome, setEmailFromWelcome] = useState("");
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/users/adduser").then((response) => {
-      setAuth(response.data.loggedIn);
-      setLoading(false);
-    });
-  }, []);
+  const { isAuth, isLoading } = useAuth();
 
   return (
-    <>
-      <Router>
-        <Header isAuth={isAuth} />
-        {!isLoading && (
-          <Routes>
-            <Route
-              path='/'
-              element={
-                isAuth ? (
-                  <MainPage isAuth={isAuth} setAuth={setAuth} />
-                ) : (
-                  <WelcomePage setEmailFromWelcome={setEmailFromWelcome} />
-                )
-              }
-            />
-            <Route
-              path='/login'
-              element={
-                isAuth ? (
-                  <MainPage isAuth={isAuth} setAuth={setAuth} />
-                ) : (
-                  <LoginPage setAuth={setAuth} />
-                )
-              }
-            />
-            <Route
-              path='/sign-up'
-              element={
-                isAuth ? (
-                  <MainPage isAuth={isAuth} setAuth={setAuth} />
-                ) : (
-                  <SignUpPage emailFromWelcome={emailFromWelcome} />
-                )
-              }
-            />
-            <Route path='create-test' element={<CreateTest />} />
-            <Route path='profile' element={<Profile setAuth={setAuth} />} />
-          </Routes>
-        )}
-      </Router>
-    </>
+    <Router>
+      <Header />
+      {!isLoading && (
+        <Routes>
+          <Route
+            path='/'
+            element={
+              isAuth ? <MainPage /> : <WelcomePage setEmailFromWelcome={setEmailFromWelcome} />
+            }
+          />
+          <Route path='/login' element={isAuth ? <MainPage /> : <LoginPage />} />
+          <Route
+            path='/sign-up'
+            element={isAuth ? <MainPage /> : <SignUpPage emailFromWelcome={emailFromWelcome} />}
+          />
+          <Route path='/create-test' element={<CreateTest />} />
+          <Route path='/profile' element={<Profile />} />
+        </Routes>
+      )}
+    </Router>
   );
 }
 
-export default App;
+export default function WrappedApp() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}

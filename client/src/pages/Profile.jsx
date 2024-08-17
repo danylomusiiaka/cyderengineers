@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-function Profile({ setAuth }) {
+function Profile() {
     const [email, setEmail] = useState("");
     const [tests, setTests] = useState([]);
+     const { setAuth } = useAuth();
     const navigate = useNavigate();
 
     Axios.defaults.withCredentials = true

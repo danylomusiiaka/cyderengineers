@@ -13,8 +13,7 @@ router.post("/adduser", async (req, res) => {
 
   const user = new userModel({
     email,
-    password,
-    isLogined: false,
+    password
   });
 
   req.session.user = user;
@@ -22,7 +21,7 @@ router.post("/adduser", async (req, res) => {
   res.send("200 Success");
 });
 
-router.get("/adduser", (req, res) => {
+router.get("/status", (req, res) => {
   if (req.session.user) {
     res.send({ loggedIn: true, user: req.session.user });
   } else {
@@ -39,7 +38,6 @@ router.post("/login", async (req, res) => {
     return res.status(401).send("Invalid email or password");
   }
 
-  user.isLogined = true;
   req.session.user = user;
   await user.save();
   res.send("200 Success");

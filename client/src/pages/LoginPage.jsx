@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import Axios from 'axios';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-function LoginPage({ setAuth }) {
+function LoginPage() {
     const navigate = useNavigate();
+    const { setAuth } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
 
     const loginUser = async (values) => {

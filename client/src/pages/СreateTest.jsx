@@ -16,7 +16,7 @@ function CreateTest() {
 
     const addTest = async (values) => {
         
-        const response = await Axios.post('http://localhost:3001/addtest', {
+        const response = await Axios.post('http://localhost:3001/tests/addtest', {
             name: values.name,
             option: values.option,
             description: values.description,
