@@ -82,15 +82,6 @@ img {
   color: white;
 }
 
-@media (max-width: 450px) {
-  .text-center {
-    text-align: start !important;
-  }
-
-  .navbar {
-    margin: 10px !important;
-  }
-}
 
 .auth-section {
   width: 100vw;

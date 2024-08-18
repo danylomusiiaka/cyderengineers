@@ -8,30 +8,25 @@ import SignUpPage from "./pages/SignUpPage";
 import MainPage from "./pages/MainPage";
 import CreateTest from "./pages/СreateTest";
 import Profile from "./pages/Profile";
-import { useState } from "react";
+import ServerError from "./components/ServerError";
 
 function App() {
-  const [emailFromWelcome, setEmailFromWelcome] = useState("");
-  const { isAuth, isLoading } = useAuth();
+  const { isAuth, isLoading, error } = useAuth();
 
   return (
     <Router>
       <Header />
+      {error && <ServerError/>}
       {!isLoading && (
         <Routes>
-          <Route
-            path='/'
-            element={
-              isAuth ? <MainPage /> : <WelcomePage setEmailFromWelcome={setEmailFromWelcome} />
-            }
-          />
+          <Route path='/' element={isAuth ? <MainPage /> : <WelcomePage />} />
           <Route path='/login' element={isAuth ? <MainPage /> : <LoginPage />} />
           <Route
             path='/sign-up'
-            element={isAuth ? <MainPage /> : <SignUpPage emailFromWelcome={emailFromWelcome} />}
+            element={isAuth ? <MainPage /> : <SignUpPage />}
           />
-          <Route path='/create-test' element={<CreateTest />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/create-test' element={isAuth ? <CreateTest /> : <WelcomePage />} />
+          <Route path='/profile' element={isAuth ? <Profile /> : <WelcomePage />} />
         </Routes>
       )}
     </Router>
@@ -40,10 +35,10 @@ function App() {
 
 export default function WrappedApp() {
   return (
-    <AlertProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <AlertProvider>
         <App />
-      </AuthProvider>
-    </AlertProvider>
+      </AlertProvider>
+    </AuthProvider>
   );
 }
