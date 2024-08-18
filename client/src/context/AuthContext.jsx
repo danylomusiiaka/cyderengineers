@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isAuth, setAuth] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [email, setEmail] = useState();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -18,6 +19,7 @@ export function AuthProvider({ children }) {
           },
         });
         setAuth(response.data.loggedIn);
+        setEmail(response.data.user.email);
       } else {
         setAuth(false);
       }
@@ -25,10 +27,10 @@ export function AuthProvider({ children }) {
     };
 
     checkAuth();
-  }, []);
+  }, [isAuth]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setAuth, isLoading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuth, setAuth, isLoading, email }}>{children}</AuthContext.Provider>
   );
 }
 

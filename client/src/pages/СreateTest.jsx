@@ -3,24 +3,13 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertContext";
 
 function CreateTest() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      Axios.get("http://localhost:3001/users/status", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => {
-        setEmail(response.data.user.email);
-      });
-    }
-  }, []);
+  const { email } = useAuth();
+  const { showAlert } = useAlert(); 
 
   const addTest = async (values) => {
     const response = await Axios.post("http://localhost:3001/tests/addtest", {
@@ -32,6 +21,7 @@ function CreateTest() {
 
     if (response.status === 200) {
       navigate("/");
+      showAlert(`Ваш тест ${values.name} було створено успішно!`, "success", 'filled');
     }
   };
 

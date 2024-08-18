@@ -1,50 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
-import Loading from "../components/Loading";
-import ConfirmationModal from "../components/ConfirmDelete"; // імплементуйте або імпортуйте компонент модального вікна
+import ConfirmationModal from "../components/ConfirmDelete";
+import { useAlert } from "../context/AlertContext";
 
 function Profile() {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false); // Стан для модального вікна
+  const { email, setAuth } = useAuth();
+  const { showAlert } = useAlert();
+  
 
-  const { setAuth } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen2, setModalOpen2] = useState(false);
+
   const navigate = useNavigate();
-
-  Axios.defaults.withCredentials = true;
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      Axios.get("http://localhost:3001/users/status", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => {
-        setEmail(response.data.user.email);
-        setLoading(false);
-      });
-    }
-  }, []);
 
   const logout = async () => {
     localStorage.removeItem("token");
+    showAlert("Ви вийшли з облікового запису", "warning");
     setAuth(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const deleteAccount = async () => {
     const token = localStorage.getItem("token");
     if (token) {
+      await Axios.delete("http://localhost:3001/tests/deleteByAuthor", {
+        data: {
+          authorEmail: email,
+        },
+      });
       await Axios.delete("http://localhost:3001/users/delete", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       localStorage.removeItem("token");
+      showAlert("Ваш обліковий запис був видалений", "warning");
       setAuth(false);
       navigate("/");
     }
@@ -55,9 +48,10 @@ function Profile() {
     setModalOpen(false);
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  const handleLogoutConfirm = () => {
+    logout();
+    setModalOpen2(false);
+  };
 
   return (
     <>
@@ -72,7 +66,7 @@ function Profile() {
           <img className='user-2' src='profile/user icon.png' />
           <div className='profile-controls'>
             <div>
-              <button className='btn login mx-2' onClick={logout}>
+              <button className='btn login mx-2' onClick={() => setModalOpen2(true)}>
                 Вийти
               </button>
               <button className='btn btn-danger' onClick={() => setModalOpen(true)}>
@@ -128,10 +122,18 @@ function Profile() {
         </div>
       </div>
       <ConfirmationModal
+        open={modalOpen2}
+        onClose={() => setModalOpen2(false)}
+        onConfirm={handleLogoutConfirm}
+        str={"вийти з профілю"}
+        buttonName={"Вийти"}
+      />
+      <ConfirmationModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleDeleteConfirm}
-        str={"профіль"}
+        str={"видалити профіль"}
+        buttonName={"Видалити"}
       />
     </>
   );

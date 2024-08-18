@@ -1,4 +1,5 @@
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AlertProvider } from "./context/AlertContext";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import WelcomePage from "./pages/WelcomePage";
@@ -39,8 +40,10 @@ function App() {
 
 export default function WrappedApp() {
   return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <AlertProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </AlertProvider>
   );
 }

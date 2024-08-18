@@ -3,7 +3,6 @@ const router = express.Router();
 const testModel = require("../models/testModel");
 const { broadcast } = require("../config/websocket");
 
-
 router.post("/addtest", async (req, res) => {
   const { name, option, description, author } = req.body;
 
@@ -24,6 +23,20 @@ router.post("/addtest", async (req, res) => {
 router.get("/", async (req, res) => {
   const tests = await testModel.find({});
   res.status(200).json(tests);
+});
+
+router.delete("/deleteByAuthor", async (req, res) => {
+  const { authorEmail } = req.body;
+
+  try {
+    const result = await testModel.deleteMany({ author: authorEmail });
+
+    broadcast({ type: "deleteAllByAuthor", authorEmail });
+
+    res.status(200).send(`Deleted ${result.deletedCount} tests by author ${authorEmail}`);
+  } catch (error) {
+    res.status(500).send("Error deleting tests by author");
+  }
 });
 
 router.delete("/:id", async (req, res) => {

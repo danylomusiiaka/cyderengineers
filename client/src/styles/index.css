@@ -182,8 +182,10 @@ nav .btn {
 }
 
 .add-btn {
-  width: 180px;
+  width: 230px;
+  margin-right: 10px;
 }
+
 
 .firstparagraph,
 .secondparagraph,

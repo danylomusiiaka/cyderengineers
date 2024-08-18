@@ -5,9 +5,13 @@ import TestCard from "../components/TestCard";
 import Dropdown from "../components/Dropdown";
 import Loading from "../components/Loading";
 import ConfirmationModal from "../components/ConfirmDelete";
+import { useAlert } from "../context/AlertContext"; 
+import { useAuth } from "../context/AuthContext";
 
 function MainPage() {
-  const [email, setEmail] = useState("");
+  const { email } = useAuth();
+  const { showAlert } = useAlert(); 
+
   const [tests, setTests] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -18,12 +22,6 @@ function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const userResponse = await Axios.get("http://localhost:3001/users/status", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setEmail(userResponse.data.user.email);
-
         const testsResponse = await Axios.get("http://localhost:3001/tests");
         setTests(testsResponse.data);
       } catch (error) {
@@ -64,12 +62,18 @@ function MainPage() {
 
   const handleDeleteTest = async () => {
     if (testToDelete) {
-      await Axios.delete(`http://localhost:3001/tests/${testToDelete}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      try {
+        await Axios.delete(`http://localhost:3001/tests/${testToDelete}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        showAlert("Вдалося! Ваш тест було видалено успішно!", "success", 'filled');
+      } catch (error) {
+        showAlert("Сталася помилка при видаленні тесту.", "error", 'filled');
+      } finally {
+        setModalOpen(false);
+        setTestToDelete(null);
+      }
     }
-    setModalOpen(false);
-    setTestToDelete(null);
   };
 
   const openModal = (testId) => {
@@ -106,7 +110,7 @@ function MainPage() {
           />
 
           <Link className='btn sign-in add-btn' style={{ color: "white" }} to='/create-test'>
-            Додати
+            Створити
           </Link>
         </div>
       </nav>
@@ -151,7 +155,13 @@ function MainPage() {
         )}
       </div>
 
-      <ConfirmationModal open={modalOpen} onClose={closeModal} onConfirm={handleDeleteTest} str={'цей тест'} />
+      <ConfirmationModal
+        open={modalOpen}
+        onClose={closeModal}
+        onConfirm={handleDeleteTest}
+        str={"видалити цей тест"}
+        buttonName={'Видалити'}
+      />
     </section>
   );
 }
