@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
           setAuth(response.data.loggedIn);
           setEmail(response.data.user.email);
         } catch (error) {
+          console.log(error);
           setError(true);
         }
       } else {

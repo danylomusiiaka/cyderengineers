@@ -43,6 +43,8 @@ function MainPage() {
         setTests((prevTests) => [...prevTests, message.test]);
       } else if (message.type === "delete") {
         setTests((prevTests) => prevTests.filter((test) => test._id !== message.testId));
+      } else if (message.type === "deleteAllByAuthor") {
+        setTests((prevTests) => prevTests.filter((test) => test.author !== message.authorEmail));
       }
     });
     return () => {
