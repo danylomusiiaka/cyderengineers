@@ -4,9 +4,10 @@ import Axios from "axios";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isAuth, setAuth] = useState(null);
+  const [isAuth, setAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
+  const [isVerified, setisVerified] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -21,7 +22,8 @@ export function AuthProvider({ children }) {
             },
           });
           setAuth(response.data.loggedIn);
-          setEmail(response.data.user.email);
+          setEmail(response.data.email);
+          setisVerified(response.data.isVerified);
         } catch (error) {
           console.log(error);
           setError(true);
@@ -36,7 +38,9 @@ export function AuthProvider({ children }) {
   }, [isAuth]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setAuth, isLoading, email, error }}>
+    <AuthContext.Provider
+      value={{ isAuth, setAuth, isLoading, email, error, isVerified, setisVerified }}
+    >
       {children}
     </AuthContext.Provider>
   );

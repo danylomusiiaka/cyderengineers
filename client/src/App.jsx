@@ -9,6 +9,7 @@ import MainPage from "./pages/MainPage";
 import CreateTest from "./pages/СreateTest";
 import Profile from "./pages/Profile";
 import ServerError from "./components/ServerError";
+import EmailVerification from "./pages/EmailVerification";
 
 function App() {
   const { isAuth, isLoading, error } = useAuth();
@@ -27,6 +28,7 @@ function App() {
           />
           <Route path='/create-test' element={isAuth ? <CreateTest /> : <WelcomePage />} />
           <Route path='/profile' element={isAuth ? <Profile /> : <WelcomePage />} />
+          <Route path='/email-verification' element={ <EmailVerification/>} />
         </Routes>
       )}
     </Router>

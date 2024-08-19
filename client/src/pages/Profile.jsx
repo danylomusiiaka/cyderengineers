@@ -7,7 +7,7 @@ import ConfirmationModal from "../components/ConfirmDelete";
 import { useAlert } from "../context/AlertContext";
 
 function Profile() {
-  const { email, setAuth } = useAuth();
+  const { email, setAuth,setisVerified } = useAuth();
   const { showAlert } = useAlert();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,6 +38,7 @@ function Profile() {
       localStorage.removeItem("token");
       showAlert("Ваш обліковий запис був видалений", "warning");
       setAuth(false);
+      setisVerified(false);
       navigate("/");
     }
   };

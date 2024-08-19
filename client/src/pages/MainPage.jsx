@@ -151,7 +151,7 @@ function MainPage() {
 
         {userTests.length === 0 && otherTests.length === 0 && (
           <div className='col-12'>
-            <h3>Ви ще не створили жодного тесту</h3>
+            <h3>Жодного тесту ще не створено</h3>
           </div>
         )}
       </div>
