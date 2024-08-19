@@ -98,7 +98,7 @@ router.get("/status", async (req, res) => {
   console.log(user);
 
   if (user.isVerified) {
-    res.send({ loggedIn: true, isVerified: true, email: user.email });
+    res.send({ loggedIn: true, isVerified: true, email: user.email, createdAt: user.createdAt });
   } else {
     res.send({ loggedIn: false, isVerified: false });
   }

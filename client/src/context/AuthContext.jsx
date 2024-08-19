@@ -9,28 +9,32 @@ export function AuthProvider({ children }) {
   const [email, setEmail] = useState("");
   const [isVerified, setisVerified] = useState(false);
   const [error, setError] = useState(false);
+  const [createdAt, setCreatedAt] = useState("");
 
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("token");
 
-      if (token) {
-        try {
-          const response = await Axios.get("http://localhost:3001/users/status", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setAuth(response.data.loggedIn);
-          setEmail(response.data.email);
-          setisVerified(response.data.isVerified);
-        } catch (error) {
-          console.log(error);
-          setError(true);
-        }
-      } else {
+      if (!token) {
         setAuth(false);
+        return;
       }
+
+      try {
+        const response = await Axios.get("http://localhost:3001/users/status", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAuth(response.data.loggedIn);
+        setEmail(response.data.email);
+        setisVerified(response.data.isVerified);
+        setCreatedAt(response.data.createdAt);
+      } catch (error) {
+        console.log(error);
+        setError(true);
+      }
+
       setLoading(false);
     };
 
@@ -39,7 +43,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuth, setAuth, isLoading, email, error, isVerified, setisVerified }}
+      value={{ isAuth, setAuth, isLoading, email, error, isVerified, setisVerified, createdAt }}
     >
       {children}
     </AuthContext.Provider>

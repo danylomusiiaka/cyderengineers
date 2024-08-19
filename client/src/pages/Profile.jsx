@@ -7,7 +7,7 @@ import ConfirmationModal from "../components/ConfirmDelete";
 import { useAlert } from "../context/AlertContext";
 
 function Profile() {
-  const { email, setAuth,setisVerified } = useAuth();
+  const { email, setAuth, setisVerified, createdAt } = useAuth();
   const { showAlert } = useAlert();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,7 +60,7 @@ function Profile() {
           <div className='col-sm-10'>
             <h1 className='Nickname'>{email}</h1>
             <p>
-              <img className='clock' src='profile/clock.png' /> Приєднався y квітні 2024
+              <img className='clock' src='profile/clock.png' /> Приєднався в {createdAt}
             </p>
           </div>
           <img className='user-2' src='profile/user icon.png' />
