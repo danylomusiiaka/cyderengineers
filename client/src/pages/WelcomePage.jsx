@@ -13,9 +13,9 @@ function WelcomePage() {
       <div className='col-md-3 justify-content-start d-xl-flex d-none px-0'>
         <img src='welcomepage/first.png' alt='welcome images' />
       </div>
-      <div className='col-xl-6 text-center'>
+      <div className='col-xl-6 text-center first-info'>
         <div className='row justify-content-center'>
-          <h1>Долучайтеся до Культурного Відкриття України!</h1>
+          <h1>Долучайтеся до культурного відкриття України!</h1>
           <p>
             Вивчайте українську спадщину через захоплюючі тести та вікторини, <br />
             отримуйте нагороди та розширюйте свої знання про культуру та мову України.
@@ -31,6 +31,8 @@ function WelcomePage() {
                 placeholder='Введіть вашу пошту...'
                 value={email}
                 onChange={handleInputChange}
+                autoFocus
+                autoComplete='email'
               />
               <Link to={`/sign-up?email=${email}`} className='btn input-group-append'>
                 Реєстрація

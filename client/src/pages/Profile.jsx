@@ -9,7 +9,6 @@ import { useAlert } from "../context/AlertContext";
 function Profile() {
   const { email, setAuth } = useAuth();
   const { showAlert } = useAlert();
-  
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);

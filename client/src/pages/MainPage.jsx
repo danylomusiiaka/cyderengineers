@@ -95,21 +95,20 @@ function MainPage() {
       <nav className='navbar'>
         <h2 className='text-break'>Вибери гру для себе</h2>
         <div className='d-flex align-items-center'>
-          <input
-            type='text'
-            className='form-control'
-            placeholder='Пошук...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-
+        <input
+          type='text'
+          className='form-control'
+          placeholder='Пошук...'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
           <Dropdown
             categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
           />
 
-          <Link className='btn sign-in add-btn' style={{ color: "white" }} to='/create-test'>
+          <Link className='btn sign-in' style={{ color: "white" }} to='/create-test'>
             Створити
           </Link>
         </div>
@@ -160,7 +159,7 @@ function MainPage() {
         onClose={closeModal}
         onConfirm={handleDeleteTest}
         str={"видалити цей тест"}
-        buttonName={'Видалити'}
+        buttonName={"Видалити"}
       />
     </section>
   );
