@@ -2,15 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import Alert from "@mui/material/Alert";
+import { useState } from "react";
 
 function SignUpPage() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const { email } = useAuth();
-  const [alertToggle, setAlertToggle] = useState(false);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -24,8 +20,13 @@ function SignUpPage() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-        setAlertToggle(true);
+        navigate("/email-verification", {
+          state: {
+            email: values.email,
+            password: values.password,
+            verificationKey: response.data.hashedKey,
+          },
+        });
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -35,7 +36,7 @@ function SignUpPage() {
   };
 
   const initialValues = {
-    email: defaultEmail,
+    email: "",
     password: "",
     confirmPassword: "",
   };
@@ -49,37 +50,30 @@ function SignUpPage() {
   });
 
   return (
-    <>
-      <div className='auth-section'>
-        <Formik initialValues={initialValues} validationSchema={validation} onSubmit={addUser}>
-          <Form className='formContainer'>
-            <h1>Реєстрація</h1>
-            <label>Пошта: </label>
-            <Field id='inputData' name='email' />
-            <ErrorMessage name='email' component='span' />
-            <label>Пароль: </label>
-            <Field id='inputData' name='password' type='password' />
-            <ErrorMessage name='password' component='span' />
-            <label>Підтверження паролю: </label>
-            <Field id='inputData' name='confirmPassword' type='password' />
-            <ErrorMessage name='confirmPassword' component='span' />
-            <button type='submit'>Зареєструватись</button>
-            <p>
-              Вже маєте обліковий запис?{" "}
-              <Link className='link' to='/login'>
-                Увійдіть
-              </Link>
-            </p>
-            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-            {alertToggle && (
-              <Alert severity='info' sx={{ padding: "10px 20px" }}>
-                Підтверження надіслано на пошту {email}
-              </Alert>
-            )}
-          </Form>
-        </Formik>
-      </div>
-    </>
+    <div className='auth-section'>
+      <Formik initialValues={initialValues} validationSchema={validation} onSubmit={addUser}>
+        <Form className='formContainer'>
+          <h1>Реєстрація</h1>
+          <label>Пошта: </label>
+          <Field id='inputData' name='email' type='email' />
+          <ErrorMessage name='email' component='span' />
+          <label>Пароль: </label>
+          <Field id='inputData' name='password' type='password' />
+          <ErrorMessage name='password' component='span' />
+          <label>Підтверження паролю: </label>
+          <Field id='inputData' name='confirmPassword' type='password' />
+          <ErrorMessage name='confirmPassword' component='span' />
+          <button type='submit'>Зареєструватись</button>
+          <p>
+            Вже маєте обліковий запис?{" "}
+            <Link className='link' to='/login'>
+              Увійдіть
+            </Link>
+          </p>
+          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+        </Form>
+      </Formik>
+    </div>
   );
 }
 

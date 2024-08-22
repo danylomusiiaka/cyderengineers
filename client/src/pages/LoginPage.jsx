@@ -56,7 +56,7 @@ function LoginPage() {
               Зареєструйтесь
             </Link>
           </p>
-          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         </Form>
       </Formik>
     </div>

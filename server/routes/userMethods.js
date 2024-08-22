@@ -6,14 +6,24 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 require("dotenv").config({ path: "../.env" });
 
-const generateToken = (user) => {
-  return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "2h",
   });
 };
 
+function generateRandomString(length = 6) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+  return result;
+}
+
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   const existingUser = await userModel.findOne({ email });
 
@@ -21,17 +31,8 @@ router.post("/register", async (req, res) => {
     return res.status(400).send("Email already registered");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const user = new userModel({ email, password: hashedPassword, isVerified: false });
-  await user.save();
-
-  const userId = user._id
-  const token = generateToken(userId);
-
-  res.json({ token });
-
-  const verificationLink = `http://localhost:5173/email-verification`;
+  const verificationKey = generateRandomString();
+  const hashedKey = await bcrypt.hash(verificationKey, 10);
 
   const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -45,44 +46,28 @@ router.post("/register", async (req, res) => {
     from: "Yukis",
     to: email,
     subject: "Підтвердіть свою пошту",
-    html: `<h3>Підтвердіть свою пошту натиснувши на посилання:</h3><a href="${verificationLink}">Підтвердити пошту</a>`,
+    html: `<h3>Ваш код доступу: ${verificationKey}</h3>`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      return res.status(500).send("Error sending verification email");
-    }
-    res.status(200).send("Verification email sent");
-  });
+  transporter.sendMail(mailOptions);
+
+  res.json({ hashedKey });
 });
 
-router.get("/verify-email", async (req, res) => {
-  const { token } = req.query;
+router.post("/verify-email", async (req, res) => {
+  const { email, password, verificationKey, userInputKey } = req.body;
 
-  if (!token) {
-    return res.status(400).send("Invalid or missing token");
+  const isMatch = await bcrypt.compare(userInputKey, verificationKey);
+
+  if (!isMatch) {
+    return res.status(400).send("Wrong verification key");
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new userModel({ email, password: hashedPassword });
+  await user.save();
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId;
-    console.log(userId);
-
-    const user = await userModel.findOne({ userId });
-    console.log(user);
-
-    if (!user) {
-      return res.status(400).send("Invalid user");
-    }
-    user.isVerified = true;
-    await user.save();
-
-    res.status(200).send("Email verified successfully!");
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send("Invalid or expired token");
-  }
+  const token = generateToken(user.id);
+  res.json({ token });
 });
 
 router.get("/status", async (req, res) => {
@@ -93,11 +78,11 @@ router.get("/status", async (req, res) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const userId = decoded.userId;
-  const user = await userModel.findOne({ userId });
-  console.log(user);
+  console.log(decoded);
 
-  if (user.isVerified) {
+  const user = await userModel.findById(decoded.id);
+
+  if (user) {
     res.send({ loggedIn: true, isVerified: true, email: user.email, createdAt: user.createdAt });
   } else {
     res.send({ loggedIn: false, isVerified: false });
@@ -119,7 +104,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).send("Invalid email or password");
   }
 
-  const token = generateToken(user);
+  const token = generateToken(user.id);
   res.json({ token });
 });
 

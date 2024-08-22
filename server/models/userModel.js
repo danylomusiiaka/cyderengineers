@@ -8,7 +8,6 @@ console.log(formattedDate); // Наприклад: 19.08.2024
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  isVerified: { type: Boolean, required: true },
   createdAt: { type: String, default: formattedDate },
 });
 

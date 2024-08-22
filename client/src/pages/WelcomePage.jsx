@@ -27,6 +27,7 @@ function WelcomePage() {
             <form className='input-group'>
               <input
                 type='email'
+                name="email"
                 className='form-control'
                 placeholder='Введіть вашу пошту...'
                 value={email}

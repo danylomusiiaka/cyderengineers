@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
 
       if (!token) {
         setAuth(false);
+        setLoading(false);
         return;
       }
 

@@ -10,25 +10,25 @@ import CreateTest from "./pages/СreateTest";
 import Profile from "./pages/Profile";
 import ServerError from "./components/ServerError";
 import EmailVerification from "./pages/EmailVerification";
+import { useRenderCount } from "@uidotdev/usehooks";
 
 function App() {
   const { isAuth, isLoading, error } = useAuth();
+  const renderCount = useRenderCount();
 
   return (
     <Router>
+      <p>Render Count: {renderCount}</p>
       <Header />
-      {error && <ServerError/>}
+      {error && <ServerError />}
       {!isLoading && (
         <Routes>
           <Route path='/' element={isAuth ? <MainPage /> : <WelcomePage />} />
           <Route path='/login' element={isAuth ? <MainPage /> : <LoginPage />} />
-          <Route
-            path='/sign-up'
-            element={isAuth ? <MainPage /> : <SignUpPage />}
-          />
+          <Route path='/sign-up' element={isAuth ? <MainPage /> : <SignUpPage />} />
           <Route path='/create-test' element={isAuth ? <CreateTest /> : <WelcomePage />} />
           <Route path='/profile' element={isAuth ? <Profile /> : <WelcomePage />} />
-          <Route path='/email-verification' element={ <EmailVerification/>} />
+          <Route path='/email-verification' element={<EmailVerification />} />
         </Routes>
       )}
     </Router>
