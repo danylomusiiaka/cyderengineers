@@ -14,11 +14,11 @@ import { useRenderCount } from "@uidotdev/usehooks";
 
 function App() {
   const { isAuth, isLoading, error } = useAuth();
-  const renderCount = useRenderCount();
+  //const renderCount = useRenderCount();
 
   return (
     <Router>
-      <p>Render Count: {renderCount}</p>
+      {/* <p>Render Count: {renderCount}</p> */}
       <Header />
       {error && <ServerError />}
       {!isLoading && (
