@@ -74,20 +74,27 @@ router.get("/status", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.send({ loggedIn: false, isVerified: false });
+    return res.send({ loggedIn: false });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(decoded);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await userModel.findById(decoded.id).select({ password: 0, _id: 0, __v: 0 });
 
-  const user = await userModel.findById(decoded.id);
-
-  if (user) {
-    res.send({ loggedIn: true, isVerified: true, email: user.email, createdAt: user.createdAt });
-  } else {
-    res.send({ loggedIn: false, isVerified: false });
+    if (user) {
+      res.send({ loggedIn: true, user });
+    } else {
+      res.send({ loggedIn: false });
+    }
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      res.status(401).send({ loggedIn: false, message: "Token has expired" });
+    } else {
+      res.status(403).send({ loggedIn: false, message: "Invalid token" });
+    }
   }
 });
+
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -127,6 +134,22 @@ router.delete("/delete", async (req, res) => {
       res.status(500).send("Error deleting profile");
     }
   });
+});
+
+router.post("/finish-test", async (req, res) => {
+  const { testId, email } = req.body;
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user.completed_tests.includes(testId)) {
+      user.completed_tests.push(testId);
+      await user.save();
+    }
+
+    res.send({ success: true, message: "Test added successfully" });
+  } catch (error) {
+    res.status(500).send({ success: false, message: "Error adding test", error });
+  }
 });
 
 module.exports = router;

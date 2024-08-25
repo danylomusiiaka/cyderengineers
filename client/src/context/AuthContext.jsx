@@ -1,15 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Axios from "axios";
+import { useAlert } from "./AlertContext";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isAuth, setAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-  const [isVerified, setisVerified] = useState(false);
   const [error, setError] = useState(false);
-  const [createdAt, setCreatedAt] = useState("");
+  const { showAlert } = useAlert();
+
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -28,14 +29,16 @@ export function AuthProvider({ children }) {
           },
         });
         setAuth(response.data.loggedIn);
-        setEmail(response.data.email);
-        setisVerified(response.data.isVerified);
-        setCreatedAt(response.data.createdAt);
+        setUser(response.data.user);
       } catch (error) {
-        console.log(error);
-        setError(true);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("token");
+          setAuth(false);
+          showAlert("Термін сесії скінчився. Будь ласка, залогуйтесь знову", "warning");
+        } else {
+          setError(true);
+        }
       }
-
       setLoading(false);
     };
 
@@ -43,9 +46,7 @@ export function AuthProvider({ children }) {
   }, [isAuth]);
 
   return (
-    <AuthContext.Provider
-      value={{ isAuth, setAuth, isLoading, email, error, isVerified, setisVerified, createdAt }}
-    >
+    <AuthContext.Provider value={{ isAuth, setAuth, isLoading, error, user }}>
       {children}
     </AuthContext.Provider>
   );

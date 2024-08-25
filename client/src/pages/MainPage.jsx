@@ -5,12 +5,12 @@ import TestCard from "../components/TestCard";
 import Dropdown from "../components/Dropdown";
 import Loading from "../components/Loading";
 import ConfirmationModal from "../components/ConfirmDelete";
-import { useAlert } from "../context/AlertContext"; 
+import { useAlert } from "../context/AlertContext";
 import { useAuth } from "../context/AuthContext";
 
 function MainPage() {
-  const { email } = useAuth();
-  const { showAlert } = useAlert(); 
+  const { user } = useAuth();
+  const { showAlert } = useAlert();
 
   const [tests, setTests] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,7 +30,6 @@ function MainPage() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -59,18 +58,16 @@ function MainPage() {
       (!selectedCategory || test.option === selectedCategory) &&
       test.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const userTests = filteredTests.filter((test) => test.author === email);
-  const otherTests = filteredTests.filter((test) => test.author !== email);
+  const userTests = filteredTests.filter((test) => test.author === user.email);
+  const otherTests = filteredTests.filter((test) => test.author !== user.email);
 
   const handleDeleteTest = async () => {
     if (testToDelete) {
       try {
-        await Axios.delete(`http://localhost:3001/tests/${testToDelete}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-        showAlert("Вдалося! Ваш тест було видалено успішно!", "success", 'filled');
+        await Axios.delete(`http://localhost:3001/tests/${testToDelete}`);
+        showAlert("Вдалося! Ваш тест було видалено успішно!", "success", "filled");
       } catch (error) {
-        showAlert("Сталася помилка при видаленні тесту.", "error", 'filled');
+        showAlert("Сталася помилка при видаленні тесту.", "error", "filled");
       } finally {
         setModalOpen(false);
         setTestToDelete(null);
@@ -97,13 +94,13 @@ function MainPage() {
       <nav className='navbar'>
         <h2 className='text-break'>Вибери гру для себе</h2>
         <div className='d-flex align-items-center'>
-        <input
-          type='text'
-          className='form-control'
-          placeholder='Пошук...'
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          <input
+            type='text'
+            className='form-control'
+            placeholder='Пошук...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <Dropdown
             categories={categories}
             selectedCategory={selectedCategory}
@@ -117,44 +114,28 @@ function MainPage() {
       </nav>
 
       {userTests.length > 0 && (
-        <div className='col-12'>
+        <>
           <h3>Ваші створені тести:</h3>
-        </div>
+          <div className='row cards'>
+            {userTests.map((test) => (
+              <TestCard test={test} handleDeleteTest={() => openModal(test._id)} />
+            ))}
+          </div>
+        </>
       )}
 
-      <div className='row cards'>
-        {userTests.map((test) => (
-          <TestCard
-            key={test._id}
-            test={test}
-            email={email}
-            handleDeleteTest={() => openModal(test._id)}
-          />
-        ))}
-      </div>
-
-      <div className='row cards'>
-        {otherTests.length > 0 && (
-          <div className='col-12'>
-            <h3>Доступні тести:</h3>
+      {otherTests.length < 0 && (
+        <>
+          <h3>Доступні тести:</h3>
+          <div className='row cards'>
+            {otherTests.map((test) => (
+              <TestCard test={test} handleDeleteTest={() => openModal(test._id)} />
+            ))}
           </div>
-        )}
+        </>
+      )}
 
-        {otherTests.map((test) => (
-          <TestCard
-            key={test._id}
-            test={test}
-            email={email}
-            handleDeleteTest={() => openModal(test._id)}
-          />
-        ))}
-
-        {userTests.length === 0 && otherTests.length === 0 && (
-          <div className='col-12'>
-            <h3>Жодного тесту ще не створено</h3>
-          </div>
-        )}
-      </div>
+      {userTests.length === 0 && otherTests.length === 0 && <h3>Жодного тесту ще не створено</h3>}
 
       <ConfirmationModal
         open={modalOpen}

@@ -8,21 +8,21 @@ header {
 }
 
 .bg-authenticated {
-  background: linear-gradient(
-    90deg,
-    rgba(4, 208, 0, 0.36) 36.53%,
-    rgba(24, 255, 243, 0.36) 63.67%,
-    rgba(5, 208, 253, 0.36) 75.76%
-  );
+  background: var(--header-gradient)
 }
 
 .sign-in {
-  background: linear-gradient(89.85deg, rgba(0, 208, 46, 0.5) 3.03%, #00d0c5 96.97%);
+  background: var(--yukis-gradient)
 }
 
 .sign-in:hover {
-  background: linear-gradient(89.85deg, rgba(1, 183, 40, 0.5) 3.03%, #00d0c5 96.97%);
+  background: linear-gradient(89.85deg, rgba(1, 155, 34, 0.5) 3.03%, #00d0c5 96.97%);
 }
+
+.sign-in:active {
+  background: linear-gradient(89.85deg, rgba(1, 101, 23, 0.5) 3.03%, #00d0c5 96.97%);
+}
+
 
 .login,
 .login:hover {

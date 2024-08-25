@@ -3,12 +3,12 @@ const bcrypt = require("bcrypt");
 const { format } = require("date-fns");
 
 const formattedDate = format(new Date(), "dd.MM.yyyy");
-console.log(formattedDate); // Наприклад: 19.08.2024
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   createdAt: { type: String, default: formattedDate },
+  completed_tests: { type: [mongoose.Schema.Types.ObjectId], ref: "tests", default: [] },
 });
 
 userSchema.methods.comparePassword = function (password) {

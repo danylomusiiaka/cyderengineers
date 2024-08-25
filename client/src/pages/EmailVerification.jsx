@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 export default function EmailVerification() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { setAuth, setisVerified } = useAuth();
+  const { setAuth } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const { email, password, verificationKey } = location.state || {};
 
@@ -23,7 +23,6 @@ export default function EmailVerification() {
       });
       localStorage.setItem("token", response.data.token);
       setAuth(true);
-      setisVerified(true);
       navigate("/");
     } catch (error) {
       setErrorMessage("Верифікація не відбулась. Перевірте правильність ключа і спробуйте ще раз.");

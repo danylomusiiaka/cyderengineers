@@ -1,19 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
 import ConfirmationModal from "../components/ConfirmDelete";
+import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
+import TestCard from "../components/TestCard";
+import Loading from "../components/Loading";
 
 function Profile() {
-  const { email, setAuth, setisVerified, createdAt } = useAuth();
+  const { user, setAuth } = useAuth();
   const { showAlert } = useAlert();
-
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [completedTests, setCompletedTests] = useState([]);
+  const token = localStorage.getItem("token");
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const completedTests = await Axios.get("http://localhost:3001/tests/all-completed", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCompletedTests(completedTests.data);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("token");
+          setAuth(false);
+          showAlert("Термін сесії скінчився. Будь ласка, залогуйтесь знову", "warning");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -22,12 +45,17 @@ function Profile() {
     navigate("/");
   };
 
+  const handleLogoutConfirm = () => {
+    logout();
+    setModalOpen2(false);
+  };
+
   const deleteAccount = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       await Axios.delete("http://localhost:3001/tests/deleteByAuthor", {
         data: {
-          authorEmail: email,
+          authorEmail: user.email,
         },
       });
       await Axios.delete("http://localhost:3001/users/delete", {
@@ -38,7 +66,6 @@ function Profile() {
       localStorage.removeItem("token");
       showAlert("Ваш обліковий запис був видалений", "warning");
       setAuth(false);
-      setisVerified(false);
       navigate("/");
     }
   };
@@ -48,19 +75,18 @@ function Profile() {
     setModalOpen(false);
   };
 
-  const handleLogoutConfirm = () => {
-    logout();
-    setModalOpen2(false);
-  };
+  if (loading) {
+    return <Loading/>
+  }
 
   return (
     <>
       <div className='container'>
         <div className='row align-items-center'>
           <div className='col-sm-10'>
-            <h1 className='Nickname'>{email}</h1>
+            <h1 className='Nickname'>{user.email}</h1>
             <p>
-              <img className='clock' src='profile/clock.png' /> Приєднався в {createdAt}
+              <img className='clock' src='profile/clock.png' /> Приєднався в {user.createdAt}
             </p>
           </div>
           <img className='user-2' src='profile/user icon.png' />
@@ -79,48 +105,23 @@ function Profile() {
       </div>
 
       <div className='container main-info'>
-        <div className='row align-items-center'>
-          <div className='col-sm-3'>
-            <h3 className='static'>Статистика</h3>
-            <div className='block-days'>
-              <img className='fire' src='profile/fire_streak.png' alt='Group Icon' />
-              <span className='number'>12</span>
-              <p className='description'>Кількість днів</p>
-            </div>
-            <div className='liga'>
-              <img className='lig-name' src='profile/liga.png' alt='Group Icon' />
-              <span className='number'>Ліга</span>
-              <p className='description'>Поточна ліга</p>
-            </div>
+        {completedTests.length > 0 && (
+          <div className='col-12'>
+            <h3>Ваші пройдені тести:</h3>
           </div>
-          <div className='col-sm-3'>
-            <div className='block-points'>
-              <img className='mack' src='profile/lightning.png' alt='Group Icon' />
-              <span className='number'>100</span>
-              <p className='description'>Кількість балів</p>
-            </div>
-            <div className='liga'>
-              <img className='medal' src='profile/level.png' alt='Group Icon' />
-              <span className='number'>
-                <strong>11</strong>
-              </span>
-              <p className='description'>Рівень</p>
-            </div>
-          </div>
-          <div className='col-xl'>
-            <div className='friend'>
-              <img src='profile/invite_friends.png' alt='Your Image' />
-              <div>
-                <p>Запросіть своїх друзів</p>
-                <p>Розкажи своїм друзям про YUkis</p>
-              </div>
-            </div>
-            <div className='friend-container'>
-              <button>Запросити друзів</button>
-            </div>
-          </div>
+        )}
+        <div className='row cards'>
+          {completedTests.map((test) => (
+            <TestCard
+              key={test._id}
+              test={test}
+              email={user.email}
+              handleDeleteTest={() => openModal(test._id)}
+            />
+          ))}
         </div>
       </div>
+
       <ConfirmationModal
         open={modalOpen2}
         onClose={() => setModalOpen2(false)}

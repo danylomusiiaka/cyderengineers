@@ -8,7 +8,7 @@ import { useAlert } from "../context/AlertContext";
 
 function CreateTest() {
   const navigate = useNavigate();
-  const { email } = useAuth();
+  const { user } = useAuth();
   const { showAlert } = useAlert(); 
 
   const addTest = async (values) => {
@@ -16,7 +16,7 @@ function CreateTest() {
       name: values.name,
       option: values.option,
       description: values.description,
-      author: email,
+      author: user.email,
     });
 
     if (response.status === 200) {
@@ -36,7 +36,7 @@ function CreateTest() {
     option: Yup.string().required("Категорія має бути обрана"),
     description: Yup.string()
       .required("Опис є обов'язковим")
-      .max(100, "Опис повинен бути не більше 100 символів"),
+      .max(500, "Опис повинен бути не більше 500 символів"),
   });
 
   return (
