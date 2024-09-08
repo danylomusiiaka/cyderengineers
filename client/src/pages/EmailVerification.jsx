@@ -9,13 +9,13 @@ import Alert from "@mui/material/Alert";
 export default function EmailVerification() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { setAuth, apiUrl } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const { email, password, verificationKey } = location.state || {};
 
   const handleVerification = async (values) => {
     try {
-      const response = await Axios.post("http://localhost:3001/users/verify-email", {
+      const response = await Axios.post(`${apiUrl}/users/verify-email`, {
         verificationKey,
         userInputKey: values.verificationKey,
         email,

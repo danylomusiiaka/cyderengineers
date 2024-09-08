@@ -5,11 +5,11 @@ import { useAuth } from "../context/AuthContext";
 
 export default function TestModal({ isOpen, onClose, test }) {
   const { showAlert } = useAlert();
-  const { user } = useAuth();
+  const { user, apiUrl } = useAuth();
 
   const handleStartTest = async () => {
     try {
-      await Axios.post("http://localhost:3001/users/finish-test", {
+      await Axios.post(`${apiUrl}/users/finish-test`, {
         testId: test._id,
         email: user.email,
       });

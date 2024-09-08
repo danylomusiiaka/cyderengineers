@@ -2,17 +2,16 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 
 function CreateTest() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, apiUrl } = useAuth();
   const { showAlert } = useAlert(); 
 
   const addTest = async (values) => {
-    const response = await Axios.post("http://localhost:3001/tests/addtest", {
+    const response = await Axios.post(`${apiUrl}/tests/addtest`, {
       name: values.name,
       option: values.option,
       description: values.description,

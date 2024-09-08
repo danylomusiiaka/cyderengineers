@@ -5,6 +5,8 @@ import { useAlert } from "./AlertContext";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
+  
   const [isAuth, setAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -23,11 +25,14 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const response = await Axios.get("http://localhost:3001/users/status", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response  = await Axios.get(
+          `${apiUrl}/users/status`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setAuth(response.data.loggedIn);
         setUser(response.data.user);
       } catch (error) {
@@ -46,7 +51,7 @@ export function AuthProvider({ children }) {
   }, [isAuth]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setAuth, isLoading, error, user }}>
+    <AuthContext.Provider value={{ isAuth, setAuth, isLoading, error, user, apiUrl }}>
       {children}
     </AuthContext.Provider>
   );

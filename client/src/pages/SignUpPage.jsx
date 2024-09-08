@@ -3,10 +3,12 @@ import * as Yup from "yup";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function SignUpPage() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const { apiUrl } = useAuth();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -14,7 +16,7 @@ function SignUpPage() {
 
   const addUser = async (values) => {
     try {
-      const response = await Axios.post("http://localhost:3001/users/register", {
+      const response = await Axios.post(`${apiUrl}/users/register`, {
         email: values.email,
         password: values.password,
       });

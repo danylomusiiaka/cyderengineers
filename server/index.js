@@ -5,17 +5,18 @@ const cookieParser = require("cookie-parser");
 const http = require("http");
 const mongoose = require("./config/mongodb");
 const { setupWebSocketServer } = require("./config/websocket");
+require("dotenv").config({ path: "../.env" });
 
 const app = express();
 const server = http.createServer(app);
+const web_url = process.env.WEB_URL || "http://localhost:5173";
 
-// Initialize WebSocket server
 setupWebSocketServer(server);
 
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: web_url,
     methods: ["GET", "POST", "DELETE"],
     credentials: true,
   })
@@ -31,7 +32,6 @@ const testRoutes = require("./routes/testMethods");
 app.use("/users", userRoutes);
 app.use("/tests", testRoutes);
 
-// Server
 server.listen(3001, () => {
   console.log("Server is listening on port 3001");
 });

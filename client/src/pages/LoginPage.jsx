@@ -7,12 +7,12 @@ import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
-  const [errorMessage, setErrorMessage] = useState("");
+  const { setAuth, apiUrl } = useAuth();
+  const [errorMessage, setErrorMessage] = useState("");  
 
   const loginUser = async (values) => {
     try {
-      const response = await Axios.post("http://localhost:3001/users/login", {
+      const response = await Axios.post(`${apiUrl}/users/login`, {
         email: values.email,
         password: values.password,
       });

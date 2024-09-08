@@ -8,7 +8,7 @@ import TestCard from "../components/TestCard";
 import Loading from "../components/Loading";
 
 function Profile() {
-  const { user, setAuth } = useAuth();
+  const { user, setAuth, apiUrl } = useAuth();
   const { showAlert } = useAlert();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
@@ -19,7 +19,7 @@ function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const completedTests = await Axios.get("http://localhost:3001/tests/all-completed", {
+        const completedTests = await Axios.get(`${apiUrl}/tests/all-completed`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,12 +53,12 @@ function Profile() {
   const deleteAccount = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      await Axios.delete("http://localhost:3001/tests/deleteByAuthor", {
+      await Axios.delete(`${apiUrl}/tests/deleteByAuthor`, {
         data: {
           authorEmail: user.email,
         },
       });
-      await Axios.delete("http://localhost:3001/users/delete", {
+      await Axios.delete(`${apiUrl}/users/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

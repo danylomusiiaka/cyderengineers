@@ -9,7 +9,7 @@ import { useAlert } from "../context/AlertContext";
 import { useAuth } from "../context/AuthContext";
 
 function MainPage() {
-  const { user } = useAuth();
+  const { user, apiUrl } = useAuth();
   const { showAlert } = useAlert();
 
   const [tests, setTests] = useState([]);
@@ -22,7 +22,7 @@ function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const testsResponse = await Axios.get("http://localhost:3001/tests");
+        const testsResponse = await Axios.get(`${apiUrl}/tests`);
         setTests(testsResponse.data);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -64,7 +64,7 @@ function MainPage() {
   const handleDeleteTest = async () => {
     if (testToDelete) {
       try {
-        await Axios.delete(`http://localhost:3001/tests/${testToDelete}`);
+        await Axios.delete(`${apiUrl}/tests/${testToDelete}`);
         showAlert("Вдалося! Ваш тест було видалено успішно!", "success", "filled");
       } catch (error) {
         showAlert("Сталася помилка при видаленні тесту.", "error", "filled");
@@ -118,7 +118,7 @@ function MainPage() {
           <h3>Ваші створені тести:</h3>
           <div className='row cards'>
             {userTests.map((test) => (
-              <TestCard test={test} handleDeleteTest={() => openModal(test._id)} />
+              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />
             ))}
           </div>
         </>
@@ -129,7 +129,7 @@ function MainPage() {
           <h3>Доступні тести:</h3>
           <div className='row cards'>
             {otherTests.map((test) => (
-              <TestCard test={test} handleDeleteTest={() => openModal(test._id)} />
+              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />
             ))}
           </div>
         </>
