@@ -5,24 +5,30 @@ import Axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
+interface LoginInfo {
+  email: string;
+  password: string;
+}
+
 function LoginPage() {
   const navigate = useNavigate();
   const { setAuth, apiUrl } = useAuth();
-  const [errorMessage, setErrorMessage] = useState("");  
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const loginUser = async (values) => {
+  const loginUser = async (values: LoginInfo) => {
     try {
       const response = await Axios.post(`${apiUrl}/users/login`, {
         email: values.email,
         password: values.password,
       });
+      console.log(values);
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         setAuth(true);
         navigate("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 401) {
         setErrorMessage("Неправильна пошта або пароль.");
       }

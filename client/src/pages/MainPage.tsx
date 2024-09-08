@@ -7,17 +7,25 @@ import Loading from "../components/Loading";
 import ConfirmationModal from "../components/ConfirmDelete";
 import { useAlert } from "../context/AlertContext";
 import { useAuth } from "../context/AuthContext";
+import { Test } from "../interfaces/Test";
 
-function MainPage() {
+interface WebSocketMessage {
+  type: "add" | "delete" | "deleteAllByAuthor";
+  test: Test;
+  testId: string;
+  authorEmail: string;
+}
+
+export default function MainPage() {
   const { user, apiUrl } = useAuth();
   const { showAlert } = useAlert();
 
-  const [tests, setTests] = useState([]);
+  const [tests, setTests] = useState<Test[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [testToDelete, setTestToDelete] = useState(null);
+  const [testToDelete, setTestToDelete] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,8 +44,8 @@ function MainPage() {
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:3001");
 
-    socket.addEventListener("message", (event) => {
-      const message = JSON.parse(event.data);
+    socket.addEventListener("message", (event: MessageEvent) => {
+      const message: WebSocketMessage = JSON.parse(event.data);
       if (message.type === "add") {
         setTests((prevTests) => [...prevTests, message.test]);
       } else if (message.type === "delete") {
@@ -70,19 +78,19 @@ function MainPage() {
         showAlert("Сталася помилка при видаленні тесту.", "error", "filled");
       } finally {
         setModalOpen(false);
-        setTestToDelete(null);
+        setTestToDelete("");
       }
     }
   };
 
-  const openModal = (testId) => {
+  const openModal = (testId: string) => {
     setTestToDelete(testId);
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
-    setTestToDelete(null);
+    setTestToDelete("");
   };
 
   if (loading) {
@@ -147,5 +155,3 @@ function MainPage() {
     </section>
   );
 }
-
-export default MainPage;

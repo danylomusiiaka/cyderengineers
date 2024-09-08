@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import TestCard from "../components/TestCard";
 import Loading from "../components/Loading";
+import { Test } from "../interfaces/Test";
 
 function Profile() {
   const { user, setAuth, apiUrl } = useAuth();
@@ -24,12 +25,16 @@ function Profile() {
             Authorization: `Bearer ${token}`,
           },
         });
+
         setCompletedTests(completedTests.data);
-      } catch (error) {
+      } catch (error: any) {
         if (error.response && error.response.status === 401) {
           localStorage.removeItem("token");
           setAuth(false);
           showAlert("Термін сесії скінчився. Будь ласка, залогуйтесь знову", "warning");
+        }
+        if (error.response.status === 400) {
+          console.log("No completed tests");
         }
       } finally {
         setLoading(false);
@@ -42,7 +47,6 @@ function Profile() {
     localStorage.removeItem("token");
     showAlert("Ви вийшли з облікового запису", "warning");
     setAuth(false);
-    navigate("/");
   };
 
   const handleLogoutConfirm = () => {
@@ -66,7 +70,6 @@ function Profile() {
       localStorage.removeItem("token");
       showAlert("Ваш обліковий запис був видалений", "warning");
       setAuth(false);
-      navigate("/");
     }
   };
 
@@ -76,7 +79,7 @@ function Profile() {
   };
 
   if (loading) {
-    return <Loading/>
+    return <Loading />;
   }
 
   return (
@@ -111,13 +114,8 @@ function Profile() {
           </div>
         )}
         <div className='row cards'>
-          {completedTests.map((test) => (
-            <TestCard
-              key={test._id}
-              test={test}
-              email={user.email}
-              handleDeleteTest={() => openModal(test._id)}
-            />
+          {completedTests.map((test: Test) => (
+            <TestCard test={test} handleDeleteTest={() => openModal(test._id)} />
           ))}
         </div>
       </div>

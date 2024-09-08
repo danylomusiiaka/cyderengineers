@@ -13,11 +13,11 @@ export default function EmailVerification() {
   const [errorMessage, setErrorMessage] = useState("");
   const { email, password, verificationKey } = location.state || {};
 
-  const handleVerification = async (values) => {
+  const handleVerification = async (userInputKey: string) => {
     try {
       const response = await Axios.post(`${apiUrl}/users/verify-email`, {
         verificationKey,
-        userInputKey: values.verificationKey,
+        userInputKey,
         email,
         password,
       });
@@ -40,11 +40,10 @@ export default function EmailVerification() {
       <Formik
         initialValues={{ verificationKey: "" }}
         validationSchema={validationSchema}
-        onSubmit={handleVerification}
+        onSubmit={(values) => handleVerification(values.verificationKey)}
       >
         <Form className='formContainer'>
           <h1>Введіть верифікаційний код</h1>
-
           <Field id='inputData' name='verificationKey' type='text' />
           <ErrorMessage name='verificationKey' component='span' />
           <button type='submit'>Верифікувати пошту</button>

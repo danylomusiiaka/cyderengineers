@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import TestModal from "./TestModal";
 import { useAuth } from "../context/AuthContext";
+import { Test } from "../interfaces/Test";
 
-export default function TestCard({ test, handleDeleteTest }) {
+interface TestCardProps {
+  test: Test;
+  handleDeleteTest: (id: string) => void;
+}
+
+export default function TestCard({ test, handleDeleteTest }: TestCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
 
-  const truncateDescription = (description, length) => {
+  const truncateDescription = (description: string, length: number) => {
     return description.length > length ? description.substring(0, length) + "..." : description;
   };
 
@@ -27,7 +33,7 @@ export default function TestCard({ test, handleDeleteTest }) {
           {test.author === user.email && (
             <button
               className='btn btn-danger'
-              onClick={() => handleDeleteTest(test._id, test.author)}
+              onClick={() => handleDeleteTest(test._id)}
             >
               Видалити
             </button>

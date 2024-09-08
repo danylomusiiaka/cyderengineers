@@ -2,8 +2,15 @@ import { Modal, Box, Typography } from "@mui/material";
 import Axios from "axios";
 import { useAlert } from "../context/AlertContext";
 import { useAuth } from "../context/AuthContext";
+import { Test } from "../interfaces/Test";
 
-export default function TestModal({ isOpen, onClose, test }) {
+interface TestModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  test: Test;
+}
+
+export default function TestModal({ isOpen, onClose, test }: TestModalProps) {
   const { showAlert } = useAlert();
   const { user, apiUrl } = useAuth();
 
