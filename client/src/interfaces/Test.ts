@@ -3,6 +3,6 @@ export interface Test {
   name: string;
   option: string;
   description: string;
-  email: string;
   author: string;
+  picture: string;
 }

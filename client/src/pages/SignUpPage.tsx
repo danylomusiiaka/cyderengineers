@@ -14,7 +14,7 @@ function SignUpPage() {
   const queryParams = new URLSearchParams(location.search);
   const defaultEmail = queryParams.get("email") || "";
 
-  const addUser = async (values) => {
+  const addUser = async (values: { email: string, password: string }) => {
     try {
       const response = await Axios.post(`${apiUrl}/users/register`, {
         email: values.email,
@@ -30,7 +30,7 @@ function SignUpPage() {
           },
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 400) {
         setErrorMessage("Ця пошта вже зареєстрована. Спробуйте іншу");
       }
@@ -48,7 +48,7 @@ function SignUpPage() {
     password: Yup.string().required("Поле паролю є обов'язковим"),
     confirmPassword: Yup.string()
       .required("Поле підтверження паролю є обов'язковим")
-      .oneOf([Yup.ref("password"), null], "Паролі повинні співпадати"),
+      .oneOf([Yup.ref("password")], "Паролі повинні співпадати"),
   });
 
   return (

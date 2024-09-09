@@ -65,11 +65,10 @@ img {
 
 .auth-section {
   width: 100vw;
-  height: 60vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
 }
 
 .formContainer {
@@ -79,6 +78,10 @@ img {
   height: auto;
   padding: 20px;
   border-radius: 5px;
+}
+
+.formContainer h1 {
+  margin-bottom: 20px;
 }
 
 .createtest {
@@ -126,9 +129,13 @@ span {
   margin-bottom: 10px;
 }
 
+.cards {
+  padding-top: 10px;
+}
+
 .cards .btn {
   margin-right: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .card-sector {
@@ -138,6 +145,10 @@ span {
 .card {
   border: 3px solid rgba(115, 224, 143, 1);
   height: 90%;
+}
+
+.checkbox {
+  margin-right: 5px;
 }
 
 h3 {

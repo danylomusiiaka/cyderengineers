@@ -4,30 +4,35 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
+import { Test } from "../interfaces/Test";
 
 function CreateTest() {
   const navigate = useNavigate();
   const { user, apiUrl } = useAuth();
-  const { showAlert } = useAlert(); 
+  const { showAlert } = useAlert();
 
-  const addTest = async (values) => {
+  const addTest = async (values: Test) => {
     const response = await Axios.post(`${apiUrl}/tests/addtest`, {
       name: values.name,
       option: values.option,
       description: values.description,
       author: user.email,
+      picture: values.picture
     });
 
     if (response.status === 200) {
       navigate("/");
-      showAlert(`Ваш тест ${values.name} було створено успішно!`, "success", 'filled');
+      showAlert(`Ваш тест ${values.name} було створено успішно!`, "success", "filled");
     }
   };
 
   const initialValues = {
+    _id: "",
     name: "",
     option: "",
     description: "",
+    author: "",
+    picture: ""
   };
 
   const validation = Yup.object().shape({
@@ -43,6 +48,8 @@ function CreateTest() {
       <Formik initialValues={initialValues} validationSchema={validation} onSubmit={addTest}>
         <Form className='formContainer createtest'>
           <h1>Створити новий тест</h1>
+          <label>Обкладинка тесту: </label>
+          <Field id='inputData' name='picture' />
           <label>Ім'я: </label>
           <Field id='inputData' name='name' />
           <ErrorMessage name='name' component='span' />

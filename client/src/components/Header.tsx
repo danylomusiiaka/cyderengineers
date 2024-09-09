@@ -5,7 +5,7 @@ import "../styles/header.css";
 import { useRef } from "react";
 
 export default function Header() {
-  const navCheckboxRef = useRef(null);
+  const navCheckboxRef = useRef<HTMLInputElement>(null);
 
   const closeNav = () => {
     if (navCheckboxRef.current) {

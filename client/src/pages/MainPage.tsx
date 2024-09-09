@@ -22,11 +22,13 @@ export default function MainPage() {
 
   const [tests, setTests] = useState<Test[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [testToDelete, setTestToDelete] = useState("");
-  
+  const [testToDelete, setTestToDelete] = useState<string | null>(null);
+  const [showUserTests, setShowUserTests] = useState<boolean>(
+    localStorage.getItem("checkBox") === "true"
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,8 +69,9 @@ export default function MainPage() {
       (!selectedCategory || test.option === selectedCategory) &&
       test.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const userTests = filteredTests.filter((test) => test.author === user.email);
-  const otherTests = filteredTests.filter((test) => test.author !== user.email);  
+  const otherTests = filteredTests.filter((test) => test.author !== user.email);
 
   const handleDeleteTest = async () => {
     if (testToDelete) {
@@ -79,9 +82,15 @@ export default function MainPage() {
         showAlert("Сталася помилка при видаленні тесту.", "error", "filled");
       } finally {
         setModalOpen(false);
-        setTestToDelete("");
+        setTestToDelete(null);
       }
     }
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    setShowUserTests(isChecked);
+    localStorage.setItem("checkBox", `${isChecked}`);
   };
 
   const openModal = (testId: string) => {
@@ -91,7 +100,7 @@ export default function MainPage() {
 
   const closeModal = () => {
     setModalOpen(false);
-    setTestToDelete("");
+    setTestToDelete(null);
   };
 
   if (loading) {
@@ -122,7 +131,19 @@ export default function MainPage() {
         </div>
       </nav>
 
-      {userTests.length > 0 && (
+      <div className='mb-3'>
+        <label>
+          <input
+            type='checkbox'
+            className='checkbox'
+            checked={showUserTests}
+            onChange={handleCheckboxChange}
+          />
+          Показати ваші створені тести
+        </label>
+      </div>
+
+      {showUserTests && userTests.length > 0 && (
         <>
           <h3>Ваші створені тести:</h3>
           <div className='row cards'>
@@ -138,7 +159,7 @@ export default function MainPage() {
           <h3>Доступні тести:</h3>
           <div className='row cards'>
             {otherTests.map((test) => (
-              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />              
+              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />
             ))}
           </div>
         </>

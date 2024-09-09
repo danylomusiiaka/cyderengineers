@@ -17,6 +17,10 @@ const testSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  picture: {
+    type: String,
+    required: false,
+  }
 });
 
 const testModel = mongoose.model("tests", testSchema);
