@@ -21,7 +21,6 @@ function LoginPage() {
         email: values.email,
         password: values.password,
       });
-      console.log(values);
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);

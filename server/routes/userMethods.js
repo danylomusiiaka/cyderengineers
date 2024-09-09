@@ -4,23 +4,8 @@ const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
+const { generateToken, verifyToken, generateRandomString } = require("../config/authMiddleware");
 require("dotenv").config({ path: "../.env" });
-
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "2h",
-  });
-};
-
-function generateRandomString(length = 6) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters[randomIndex];
-  }
-  return result;
-}
 
 router.post("/register", async (req, res) => {
   const { email } = req.body;
@@ -70,16 +55,9 @@ router.post("/verify-email", async (req, res) => {
   res.json({ token });
 });
 
-router.get("/status", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.send({ loggedIn: false });
-  }
-
+router.get("/status", verifyToken, async (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await userModel.findById(decoded.id).select({ password: 0, _id: 0, __v: 0 });
+    const user = await userModel.findById(req.userId).select({ password: 0, _id: 0, __v: 0 });
 
     if (user) {
       res.send({ loggedIn: true, user });
@@ -87,14 +65,9 @@ router.get("/status", async (req, res) => {
       res.send({ loggedIn: false });
     }
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      res.status(401).send({ loggedIn: false, message: "Token has expired" });
-    } else {
-      res.status(403).send({ loggedIn: false, message: "Invalid token" });
-    }
+    res.status(500).send({ loggedIn: false, message: "Error fetching user status" });
   }
 });
-
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -115,25 +88,13 @@ router.post("/login", async (req, res) => {
   res.json({ token });
 });
 
-router.delete("/delete", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).send("No token provided");
+router.delete("/delete", verifyToken, async (req, res) => {
+  try {
+    await userModel.findByIdAndDelete(req.userId);
+    res.status(200).send("Profile deleted successfully");
+  } catch (error) {
+    res.status(500).send("Error deleting profile");
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-    if (err) {
-      return res.status(401).send("Invalid token");
-    }
-
-    try {
-      await userModel.findByIdAndDelete(decoded.id);
-      res.status(200).send("Profile deleted successfully");
-    } catch (error) {
-      res.status(500).send("Error deleting profile");
-    }
-  });
 });
 
 router.post("/finish-test", async (req, res) => {

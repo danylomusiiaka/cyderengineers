@@ -3,6 +3,7 @@ const router = express.Router();
 const testModel = require("../models/testModel");
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../config/authMiddleware");
 const { broadcast } = require("../config/websocket");
 
 router.post("/addtest", async (req, res) => {
@@ -55,16 +56,9 @@ router.delete("/:id", async (req, res) => {
   res.send("Test deleted");
 });
 
-router.get("/all-completed", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).send({ loggedIn: false, message: "No token provided" });
-  }
-
+router.get("/all-completed", verifyToken, async (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await userModel.findById(decoded.id);
+    const user = await userModel.findById(req.userId);
 
     if (!user) {
       return res.status(404).send("User not found");
