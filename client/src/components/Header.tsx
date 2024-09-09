@@ -37,7 +37,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link className='link' to='/'>
+              <Link className='link' to='/rating'>
                 Рейтинг учасників
               </Link>
             </li>
@@ -83,7 +83,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link className='link' to='/' onClick={closeNav}>
+            <Link className='link' to='/rating' onClick={closeNav}>
               Рейтинг учасників
             </Link>
           </li>

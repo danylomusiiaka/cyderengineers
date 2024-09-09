@@ -26,6 +26,7 @@ export default function MainPage() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [testToDelete, setTestToDelete] = useState("");
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +68,7 @@ export default function MainPage() {
       test.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const userTests = filteredTests.filter((test) => test.author === user.email);
-  const otherTests = filteredTests.filter((test) => test.author !== user.email);
+  const otherTests = filteredTests.filter((test) => test.author !== user.email);  
 
   const handleDeleteTest = async () => {
     if (testToDelete) {
@@ -98,7 +99,7 @@ export default function MainPage() {
   }
 
   return (
-    <section className='container'>
+    <section className='container main-container'>
       <nav className='navbar'>
         <h2 className='text-break'>Вибери гру для себе</h2>
         <div className='d-flex align-items-center'>
@@ -132,12 +133,12 @@ export default function MainPage() {
         </>
       )}
 
-      {otherTests.length < 0 && (
+      {otherTests.length > 0 && (
         <>
           <h3>Доступні тести:</h3>
           <div className='row cards'>
             {otherTests.map((test) => (
-              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />
+              <TestCard key={test._id} test={test} handleDeleteTest={() => openModal(test._id)} />              
             ))}
           </div>
         </>

@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import MainPage from "./pages/MainPage";
 import CreateTest from "./pages/СreateTest";
 import Profile from "./pages/Profile";
+import Rating from "./pages/Rating";
 import ServerError from "./components/ServerError";
 import EmailVerification from "./pages/EmailVerification";
 import { useRenderCount } from "@uidotdev/usehooks";
@@ -29,6 +30,7 @@ function App() {
           <Route path='/create-test' element={isAuth ? <CreateTest /> : <WelcomePage />} />
           <Route path='/profile' element={isAuth ? <Profile /> : <WelcomePage />} />
           <Route path='/email-verification' element={<EmailVerification />} />
+          <Route path='/rating' element={<Rating />} />
         </Routes>
       )}
     </Router>

@@ -25,12 +25,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Routes
 const userRoutes = require("./routes/userMethods");
 const testRoutes = require("./routes/testMethods");
+//const devRoutes = require("./routes/devMethods");
 
 app.use("/users", userRoutes);
 app.use("/tests", testRoutes);
+//app.use("/", devRoutes);
 
 server.listen(3001, () => {
   console.log("Server is listening on port 3001");

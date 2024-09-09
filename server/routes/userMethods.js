@@ -113,4 +113,14 @@ router.post("/finish-test", async (req, res) => {
   }
 });
 
+router.get("/rating", async (req, res) => {
+  try {
+    const users = await userModel.find().select("email completed_tests");
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send("Error fetching users");
+  }
+});
+
 module.exports = router;
