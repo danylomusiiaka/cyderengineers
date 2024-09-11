@@ -7,14 +7,15 @@ const { verifyToken } = require("../config/authMiddleware");
 const { broadcast } = require("../config/websocket");
 
 router.post("/addtest", async (req, res) => {
-  const { name, option, description, author, picture } = req.body;
+  const { name, category, description, author, picture, questions } = req.body;
 
   const test = new testModel({
     name,
-    option,
+    category,
     description,
     author,
-    picture
+    picture,
+    questions,
   });
 
   await test.save();

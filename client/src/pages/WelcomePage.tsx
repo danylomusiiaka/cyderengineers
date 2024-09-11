@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function WelcomePage() {
   const [email, setEmail] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 

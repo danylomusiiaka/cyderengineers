@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
 
+const questionSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  options: [String],
+});
+
 const testSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  option: {
+  category: {
     type: String,
     required: true,
   },
@@ -20,7 +28,8 @@ const testSchema = new mongoose.Schema({
   picture: {
     type: String,
     required: false,
-  }
+  },
+  questions: [questionSchema],
 });
 
 const testModel = mongoose.model("tests", testSchema);

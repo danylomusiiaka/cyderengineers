@@ -35,7 +35,7 @@ export default function TestCard({ test, handleDeleteTest }: TestCardProps) {
             {test.name}
           </Typography>
           <Typography variant='body1' sx={{ color: "text.secondary" }}>
-            {test.option}
+            {test.category}
           </Typography>
           <Typography variant='body2' sx={{ color: "text.secondary" }}>
             {truncateDescription(test.description, 60)}

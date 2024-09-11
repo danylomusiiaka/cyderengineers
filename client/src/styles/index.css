@@ -25,6 +25,13 @@ h1 {
   font-weight: bold;
 }
 
+.formContainer .btn-disabled,
+.formContainer .btn-disabled:hover {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
 @media (max-width: 600px) {
   .first-info h1 {
     text-align: left;
@@ -63,12 +70,17 @@ img {
   color: white;
 }
 
-.auth-section {
+.auth-section,
+.test-section {
   width: 100vw;
   height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.test-section {
+  height: 100%;
 }
 
 .formContainer {
@@ -80,13 +92,39 @@ img {
   border-radius: 5px;
 }
 
+.questions h5 {
+  margin-bottom: 20px;
+}
 .formContainer h1 {
   margin-bottom: 20px;
 }
 
+.questions .controls {
+  margin-bottom: 20px;
+}
+.questions .controls img {
+  width: 30px;
+}
+
+.questions .controls button,
+.questions .controls button:hover {
+  background-color: azure;
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+}
+.questions {
+  margin-top: 10px;
+}
+
+.options label {
+  margin-right: 10px;
+}
 .createtest {
   width: 600px;
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .formContainer #inputData {

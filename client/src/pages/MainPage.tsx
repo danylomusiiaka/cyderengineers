@@ -62,11 +62,11 @@ export default function MainPage() {
     };
   }, []);
 
-  const categories = Array.from(new Set(tests.map((test) => test.option)));
+  const categories = Array.from(new Set(tests.map((test) => test.category)));
 
   const filteredTests = tests.filter(
     (test) =>
-      (!selectedCategory || test.option === selectedCategory) &&
+      (!selectedCategory || test.category === selectedCategory) &&
       test.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
