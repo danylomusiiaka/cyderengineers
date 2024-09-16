@@ -24,6 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuth, setAuth] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+  const [result, setResult] = useState('');
   const { showAlert } = useAlert();
   const [user, setUser] = useState<User>({} as User);
 

@@ -8,7 +8,19 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   createdAt: { type: String, default: formattedDate },
-  completed_tests: { type: [mongoose.Schema.Types.ObjectId], ref: "tests", default: [] },
+  completed_tests: [
+    {
+      testId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tests",
+        required: true,
+      },
+      result: {
+        type: String,
+        default: "",
+      },
+    },
+  ],
 });
 
 userSchema.methods.comparePassword = function (password) {

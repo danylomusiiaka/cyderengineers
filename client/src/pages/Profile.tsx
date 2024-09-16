@@ -20,11 +20,11 @@ function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const completedTests = await Axios.get(`${apiUrl}/tests/all-completed`, {
+        const completedTests = await Axios.get(`${apiUrl}/users/all_completed`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        });        
 
         setCompletedTests(completedTests.data);
       } catch (error: any) {
@@ -33,9 +33,7 @@ function Profile() {
           setAuth(false);
           showAlert("Термін сесії скінчився. Будь ласка, залогуйтесь знову", "warning");
         }
-        if (error.response.status === 400) {
-          console.log("No completed tests");
-        }
+       
       } finally {
         setLoading(false);
       }

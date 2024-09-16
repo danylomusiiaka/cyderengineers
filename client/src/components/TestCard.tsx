@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TestModal from "./TestModal";
 import { useAuth } from "../context/AuthContext";
 import { Test } from "../interfaces/Test";
@@ -17,6 +17,15 @@ interface TestCardProps {
 export default function TestCard({ test, handleDeleteTest }: TestCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
+  const [percents, setPercents] = useState("0");
+
+  const fetchPercents = () => {
+    user.completed_tests.forEach((value) => {
+      if (value.testId === test._id) {
+        setPercents(value.result);
+      }
+    });
+  };
 
   const truncateDescription = (description: string, length: number) => {
     return description.length > length ? description.substring(0, length) + "..." : description;
@@ -41,7 +50,12 @@ export default function TestCard({ test, handleDeleteTest }: TestCardProps) {
             {truncateDescription(test.description, 60)}
           </Typography>
           <div className='controls'>
-            <button className='btn login' onClick={() => setIsModalOpen(true)}>
+            <button
+              className='btn login'
+              onClick={() => {
+                fetchPercents(), setIsModalOpen(true);
+              }}
+            >
               Обрати
             </button>
             {test.author === user.email && (
@@ -50,7 +64,12 @@ export default function TestCard({ test, handleDeleteTest }: TestCardProps) {
               </button>
             )}
           </div>
-          <TestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} test={test} />
+          <TestModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            test={test}
+            percents={percents}
+          />
         </CardContent>
       </Card>
     </div>

@@ -12,6 +12,7 @@ import Rating from "./pages/Rating";
 import ServerError from "./components/ServerError";
 import EmailVerification from "./pages/EmailVerification";
 import { useRenderCount } from "@uidotdev/usehooks";
+import Quiz from "./pages/Quiz";
 
 function App() {
   const { isAuth, isLoading, error } = useAuth();
@@ -31,6 +32,7 @@ function App() {
           <Route path='/profile' element={isAuth ? <Profile /> : <WelcomePage />} />
           <Route path='/email-verification' element={<EmailVerification />} />
           <Route path='/rating' element={<Rating />} />
+          <Route path='/quiz' element={<Quiz />} />
         </Routes>
       )}
     </Router>

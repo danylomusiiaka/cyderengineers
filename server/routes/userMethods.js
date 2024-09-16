@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userModel = require("../models/userModel");
-const jwt = require("jsonwebtoken");
+const testModel = require("../models/testModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const { generateToken, verifyToken, generateRandomString } = require("../config/authMiddleware");
@@ -97,19 +97,29 @@ router.delete("/delete", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/finish-test", async (req, res) => {
-  const { testId, email } = req.body;
+router.post("/finish_test", async (req, res) => {
+  const { testId, email, result } = req.body;
 
   try {
     const user = await userModel.findOne({ email });
-    if (!user.completed_tests.includes(testId)) {
-      user.completed_tests.push(testId);
-      await user.save();
+    if (!user) {
+      return res.status(404).send({ success: false, message: "User not found" });
     }
 
-    res.send({ success: true, message: "Test added successfully" });
+    const completedTestIndex = user.completed_tests.findIndex(
+      (test) => test.testId.valueOf() === testId
+    );
+
+    if (completedTestIndex === -1) {
+      user.completed_tests.push({ testId, result });
+    } else {
+      user.completed_tests[completedTestIndex].result = result;
+    }
+
+    await user.save();
+    res.send({ success: true, message: "Test finished successfully" });
   } catch (error) {
-    res.status(500).send({ success: false, message: "Error adding test", error });
+    res.status(500).send({ success: false, message: "Error finishing test", error });
   }
 });
 
@@ -120,6 +130,24 @@ router.get("/rating", async (req, res) => {
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).send("Error fetching users");
+  }
+});
+
+router.get("/all_completed", verifyToken, async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).send({ success: false, message: "User not found" });
+    }
+
+    const testIds = user.completed_tests.map((test) => test.testId);
+
+    const tests = await testModel.find({ _id: { $in: testIds } });
+
+    res.status(200).json(tests);
+  } catch (error) {
+    res.status(500).send("Error fetching completed tests", error.message);
   }
 });
 
